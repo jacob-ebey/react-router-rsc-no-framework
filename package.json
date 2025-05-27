@@ -1,0 +1,40 @@
+{
+  "private": true,
+  "targets": {
+    "server": {
+      "source": "src/server.ts",
+      "context": "react-server",
+      "scopeHoist": false,
+      "includeNodeModules": {
+        "express": false,
+        "compression": false
+      }
+    }
+  },
+  "scripts": {
+    "build": "parcel build",
+    "dev": "parcel"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@mjackson/node-fetch-server": "0.6.1",
+    "@parcel/runtime-rsc": "2.15.2",
+    "compression": "^1.8.0",
+    "express": "5.1.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-router": "0.0.0-experimental-8c9575952",
+    "react-server-dom-parcel": "19.1.0"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "5.2.2",
+    "@types/compression": "^1.8.0",
+    "@types/express": "5.0.2",
+    "@types/node": "22.15.23",
+    "@types/react": "19.1.6",
+    "@types/react-dom": "19.1.5",
+    "parcel": "2.15.2",
+    "prettier": "3.5.3",
+    "typescript": "5.8.3"
+  }
+}
