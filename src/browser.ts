@@ -7,7 +7,6 @@ import {
   unstable_getServerStream,
   unstable_RSCHydratedRouter,
 } from "react-router";
-import type { unstable_ServerPayload } from "react-router/rsc";
 import {
   createFromReadableStream,
   encodeReply,
@@ -22,10 +21,8 @@ const callServer = unstable_createCallServer({
 
 setServerCallback(callServer);
 
-createFromReadableStream(unstable_getServerStream(), {
-  assets: "manifest",
-}).then((payload: unstable_ServerPayload) => {
-  React.startTransition(() => {
+createFromReadableStream(unstable_getServerStream()).then((payload: any) => {
+  React.startTransition(async () => {
     hydrateRoot(
       document,
       React.createElement(

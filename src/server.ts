@@ -1,17 +1,27 @@
-import * as React from "react" assert { env: "react-client" };
+import * as React from "react" with { env: "react-client" };
 import { createRequestListener } from "@mjackson/node-fetch-server";
 import express from "express";
 import compression from "compression";
+import { drizzle } from "drizzle-orm/libsql";
+import { env } from "std-env";
 // @ts-expect-error - no types
-import { renderToReadableStream as renderHTMLToReadableStream } from "react-dom/server.edge" assert { env: "react-client" };
+import { renderToReadableStream as renderHTMLToReadableStream } from "react-dom/server.edge" with { env: "react-client" };
 import {
   unstable_routeRSCServerRequest,
   unstable_RSCStaticRouter,
-} from "react-router" assert { env: "react-client" };
+} from "react-router" with { env: "react-client" };
 // @ts-expect-error
-import { createFromReadableStream } from "react-server-dom-parcel/client.edge" assert { env: "react-client" };
+import { createFromReadableStream } from "react-server-dom-parcel/client.edge" with { env: "react-client" };
 
-import { callServer } from "./react-server.ts" assert { env: "react-server" };
+import { callServer } from "./react-server" with { env: "react-server" };
+import { DbStorage } from "./db/client";
+import * as schema from "./db/schema";
+
+if (!env.DB_FILE_NAME) {
+  throw new Error("DB_FILE_NAME environment variable is not set");
+}
+
+const db = drizzle(env.DB_FILE_NAME, { schema });
 
 const app = express();
 app.use(compression());
@@ -27,21 +37,23 @@ app.use("/client", express.static("dist/client"));
 
 app.use(
   createRequestListener(async (request) => {
-    return unstable_routeRSCServerRequest({
-      request,
-      callServer,
-      decode: createFromReadableStream,
-      async renderHTML(getPayload) {
-        return await renderHTMLToReadableStream(
-          React.createElement(unstable_RSCStaticRouter, { getPayload }),
-          {
-            bootstrapScriptContent: (
-              callServer as unknown as { bootstrapScript: string }
-            ).bootstrapScript,
-          }
-        );
-      },
-    });
+    return DbStorage.run(db, () =>
+      unstable_routeRSCServerRequest({
+        request,
+        callServer,
+        decode: createFromReadableStream,
+        async renderHTML(getPayload) {
+          return await renderHTMLToReadableStream(
+            React.createElement(unstable_RSCStaticRouter, { getPayload }),
+            {
+              bootstrapScriptContent: (
+                callServer as unknown as { bootstrapScript: string }
+              ).bootstrapScript,
+            }
+          );
+        },
+      })
+    );
   })
 );
 

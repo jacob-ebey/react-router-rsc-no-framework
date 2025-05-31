@@ -1,4 +1,12 @@
-import { Link, Outlet } from "react-router";
+import { Outlet, ScrollRestoration } from "react-router";
+
+import { DelegateLinks } from "@/components/delegate-links";
+import { RouteErrorBoundary } from "@/components/error-boundary";
+import { authMiddleware } from "@/middleware/auth";
+
+import "./styles.css";
+
+export const unstable_middleware = [authMiddleware];
 
 export function Layout({ children }: { children?: React.ReactNode }) {
   return (
@@ -9,17 +17,9 @@ export function Layout({ children }: { children?: React.ReactNode }) {
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-          </ul>
-        </nav>
         {children}
+        <DelegateLinks />
+        <ScrollRestoration />
       </body>
     </html>
   );
@@ -30,10 +30,5 @@ export default function Root() {
 }
 
 export function ErrorBoundary() {
-  return (
-    <>
-      <title>Ooops</title>
-      <h1>Something went wrong</h1>
-    </>
-  );
+  return <RouteErrorBoundary />;
 }

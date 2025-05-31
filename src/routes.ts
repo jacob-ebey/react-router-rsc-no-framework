@@ -4,18 +4,47 @@ export default [
   {
     id: "root",
     path: "",
-    lazy: () => import("./root.tsx"),
+    lazy: () => import("./root"),
     children: [
       {
-        id: "home",
-        index: true,
-        lazy: () => import("./home/route.tsx"),
+        id: "login",
+        path: "login",
+        lazy: () => import("./routes/login"),
       },
       {
-        id: "about",
-        path: "about",
-        lazy: () => import("./about/route.tsx"),
+        id: "signup",
+        path: "signup",
+        lazy: () => import("./routes/signup"),
       },
+      {
+        id: "docs",
+        lazy: () => import("./routes/docs"),
+        children: [
+          {
+            id: "docs.home",
+            index: true,
+            lazy: () => import("./routes/docs.home"),
+          },
+          {
+            id: "docs.changelog",
+            path: "changelog",
+            lazy: () => import("./routes/docs.changelog"),
+          },
+          {
+            id: "docs.doc",
+            path: "*",
+            lazy: () => import("./routes/docs.doc"),
+          },
+        ],
+      },
+      // {
+      //   id: "doc",
+      //   path: "docs/*",
+      //   lazy: () => import("./routes/docs"),
+      //   children: [
+
+      //   ]
+      // },
     ],
   },
-] satisfies unstable_ServerRouteObject[];
+] as const satisfies unstable_ServerRouteObject[];
