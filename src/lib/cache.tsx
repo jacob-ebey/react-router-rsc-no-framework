@@ -1,4 +1,5 @@
 import { AsyncLocalStorage } from "node:async_hooks";
+import { createHash } from "node:crypto";
 
 import * as React from "react";
 // @ts-expect-error
@@ -55,7 +56,7 @@ export function cacheLife(life: CacheLife) {
   }
   if (
     !store.life ||
-    (cacheLifeMap.get(life) ?? Number.MIN_SAFE_INTEGER) <
+    (cacheLifeMap.get(life) ?? Number.MAX_SAFE_INTEGER) <
       (cacheLifeMap.get(store.life) ?? Number.MAX_SAFE_INTEGER)
   ) {
     store.life = life;
@@ -103,8 +104,20 @@ declare global {
     | undefined;
 }
 
+function tryPrase(value: unknown): unknown {
+  try {
+    JSON.parse(JSON.stringify(value));
+    return value;
+  } catch {
+    return null;
+  }
+}
+
 async function getKey(deps: unknown[], args: unknown[]): Promise<string> {
-  return await encodeReply({ deps, args });
+  return await encodeReply({
+    deps: deps.map(tryPrase).filter(Boolean),
+    args: args.map(tryPrase).filter(Boolean),
+  });
 }
 
 export function cache<Func extends (...args: any[]) => any>(
@@ -112,7 +125,9 @@ export function cache<Func extends (...args: any[]) => any>(
   deps: unknown[]
 ): MakeAsync<Func> {
   return async (...args) => {
-    const key = await getKey(deps, args);
+    const key = createHash("sha256")
+      .update(await getKey(deps, args))
+      .digest("hex");
     globalThis.reactCache ??= new Map();
     const cached =
       (await globalThis.reactCache.get(key)) ?? (await storage.getItem(key));

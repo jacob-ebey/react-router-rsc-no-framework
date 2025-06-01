@@ -14,7 +14,6 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { cache } from "@/lib/cache";
 import type { Docs } from "@/lib/docs";
 import { getDocs } from "@/lib/docs";
 import { NavLink } from "react-router";
@@ -29,31 +28,29 @@ export type NavMainItem = {
   items?: NavMainItem[];
 };
 
-export const NavMain = cache(
-  async function NavMain() {
-    // TODO: "use cache";
-    const docs = await getDocs({ preload: true });
-    const items = await docsToNavItems(docs);
+export async function NavMain() {
+  "use cache";
 
-    return (
-      <SidebarGroup>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <IsActiveSidebarMenuButton asChild pathname="/changelog">
-              <NavLink to="/changelog" className="font-bold">
-                <span>Changelog</span>
-              </NavLink>
-            </IsActiveSidebarMenuButton>
-          </SidebarMenuItem>
-          {items.map((item) => (
-            <NavItem key={item.title} item={item} />
-          ))}
-        </SidebarMenu>
-      </SidebarGroup>
-    );
-  },
-  ["nav-main-component"]
-);
+  const docs = await getDocs({ preload: true });
+  const items = await docsToNavItems(docs);
+
+  return (
+    <SidebarGroup>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <IsActiveSidebarMenuButton asChild pathname="/changelog">
+            <NavLink to="/changelog" className="font-bold">
+              <span>Changelog</span>
+            </NavLink>
+          </IsActiveSidebarMenuButton>
+        </SidebarMenuItem>
+        {items.map((item) => (
+          <NavItem key={item.title} item={item} />
+        ))}
+      </SidebarMenu>
+    </SidebarGroup>
+  );
+}
 
 function NavItem({ depth = 0, item }: { depth?: number; item: NavMainItem }) {
   if (!item.items?.length) {

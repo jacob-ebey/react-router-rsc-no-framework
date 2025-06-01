@@ -1,16 +1,18 @@
 import { appName } from "@/global-config";
-import { cache } from "@/lib/cache";
 import { processMarkdown } from "@/lib/md";
 
+async function loadChangelog() {
+  "use cache";
+
+  return processMarkdown(
+    await fetch(
+      "https://raw.githubusercontent.com/remix-run/react-router/main/CHANGELOG.md"
+    ).then((res) => res.text())
+  );
+}
+
 export default async function DocsHome() {
-  const doc = await cache(async () => {
-    // TODO: "use cache";
-    return processMarkdown(
-      await fetch(
-        "https://raw.githubusercontent.com/remix-run/react-router/main/CHANGELOG.md"
-      ).then((res) => res.text())
-    );
-  }, ["data-changelog"])();
+  const doc = await loadChangelog();
 
   return (
     <>

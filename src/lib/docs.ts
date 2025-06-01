@@ -1,7 +1,7 @@
 // @ts-expect-error - no types
 import cq from "concurrent-queue";
 
-import { cache, cacheLife } from "@/lib/cache";
+import { cacheLife } from "@/lib/cache";
 
 import { processMarkdown } from "./md";
 
@@ -24,8 +24,8 @@ export type MarkdownDoc = {
   html: string;
 };
 
-const getDocsList = cache(() => {
-  // TODO: "use cache";
+function getDocsList() {
+  "use cache";
   return fetch("https://github-md.com/remix-run/react-router/main").then(
     (res) =>
       res.json() as Promise<{
@@ -33,37 +33,39 @@ const getDocsList = cache(() => {
         files: Array<{ path: string; sha: string }>;
       }>
   );
-}, ["data-github-docs-list"]);
+}
+
+const processDoc = createDocProcessor();
 
 export const getDocs = async ({
   preload,
 }: { preload?: boolean | string | string[] } = {}): Promise<Docs> => {
   return await getDocsList().then((docs): Docs => {
-    const processDoc = createDocProcessor();
+    const sha = docs.sha;
 
     return {
       ...docs,
       files: docs.files
         .filter((file) => file.path.startsWith("docs/"))
         .map((file): DocFile => {
+          const filepath = file.path;
+
           const result = {
             ...file,
-            load: () => {
-              // TODO: "use cache";
-              return cache(() => {
-                cacheLife("max");
-                return fetch(
-                  `https://raw.githubusercontent.com/remix-run/react-router/${docs.sha}/${file.path}`
-                )
-                  .then((res) => res.text())
-                  .then(async (content) => {
-                    const doc = await processDoc(content);
-                    return {
-                      attributes: doc.attributes as any,
-                      html: doc.html,
-                    };
-                  });
-              }, [docs.sha, file.path])();
+            load: async () => {
+              "use cache";
+              cacheLife("max");
+              return await fetch(
+                `https://raw.githubusercontent.com/remix-run/react-router/${sha}/${filepath}`
+              )
+                .then((res) => res.text())
+                .then(async (content) => {
+                  const doc = await processDoc(content);
+                  return {
+                    attributes: doc.attributes as any,
+                    html: doc.html,
+                  };
+                });
             },
           };
           if (
