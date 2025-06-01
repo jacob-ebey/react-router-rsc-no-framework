@@ -3,17 +3,15 @@ import { cache } from "@/lib/cache";
 import { processMarkdown } from "@/lib/md";
 
 export default async function DocsHome() {
-  const doc = await cache(
-    () => "data-changelog",
-    async () => {
-      // TODO: "use cache";
-      return processMarkdown(
-        await fetch(
-          "https://raw.githubusercontent.com/remix-run/react-router/main/CHANGELOG.md"
-        ).then((res) => res.text())
-      );
-    }
-  )();
+  const doc = await cache(async () => {
+    // TODO: "use cache";
+    return processMarkdown(
+      await fetch(
+        "https://raw.githubusercontent.com/remix-run/react-router/main/CHANGELOG.md"
+      ).then((res) => res.text())
+    );
+  }, ["data-changelog"])();
+
   return (
     <>
       <title>{`Changelog | ${appName}`}</title>

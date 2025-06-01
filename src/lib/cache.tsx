@@ -3,8 +3,11 @@ import { AsyncLocalStorage } from "node:async_hooks";
 import * as React from "react";
 // @ts-expect-error
 import { renderToReadableStream } from "react-server-dom-parcel/server.edge";
-// @ts-expect-error
-import { createFromReadableStream } from "react-server-dom-parcel/client.edge";
+import {
+  createFromReadableStream,
+  encodeReply,
+  // @ts-expect-error
+} from "react-server-dom-parcel/client.edge";
 import { createStorage } from "unstorage";
 import fsDriver from "unstorage/drivers/fs";
 
@@ -100,12 +103,16 @@ declare global {
     | undefined;
 }
 
+async function getKey(deps: unknown[], args: unknown[]): Promise<string> {
+  return await encodeReply({ deps, args });
+}
+
 export function cache<Func extends (...args: any[]) => any>(
-  getKey: (...args: Parameters<Func>) => string,
-  func: Func
+  func: Func,
+  deps: unknown[]
 ): MakeAsync<Func> {
   return async (...args) => {
-    const key = getKey(...args);
+    const key = await getKey(deps, args);
     globalThis.reactCache ??= new Map();
     const cached =
       (await globalThis.reactCache.get(key)) ?? (await storage.getItem(key));

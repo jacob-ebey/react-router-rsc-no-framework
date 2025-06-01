@@ -24,22 +24,21 @@ export type MarkdownDoc = {
   html: string;
 };
 
+const getDocsList = cache(() => {
+  // TODO: "use cache";
+  return fetch("https://github-md.com/remix-run/react-router/main").then(
+    (res) =>
+      res.json() as Promise<{
+        sha: string;
+        files: Array<{ path: string; sha: string }>;
+      }>
+  );
+}, ["data-github-docs-list"]);
+
 export const getDocs = async ({
   preload,
 }: { preload?: boolean | string | string[] } = {}): Promise<Docs> => {
-  return await cache(
-    () => "data-github-docs-list",
-    () => {
-      // TODO: "use cache";
-      return fetch("https://github-md.com/remix-run/react-router/main").then(
-        (res) =>
-          res.json() as Promise<{
-            sha: string;
-            files: Array<{ path: string; sha: string }>;
-          }>
-      );
-    }
-  )().then((docs): Docs => {
+  return await getDocsList().then((docs): Docs => {
     const processDoc = createDocProcessor();
 
     return {
@@ -51,23 +50,20 @@ export const getDocs = async ({
             ...file,
             load: () => {
               // TODO: "use cache";
-              return cache(
-                () => `data-github-doc--${docs.sha}--${file.path}`,
-                () => {
-                  cacheLife("max");
-                  return fetch(
-                    `https://raw.githubusercontent.com/remix-run/react-router/${docs.sha}/${file.path}`
-                  )
-                    .then((res) => res.text())
-                    .then(async (content) => {
-                      const doc = await processDoc(content);
-                      return {
-                        attributes: doc.attributes as any,
-                        html: doc.html,
-                      };
-                    });
-                }
-              )();
+              return cache(() => {
+                cacheLife("max");
+                return fetch(
+                  `https://raw.githubusercontent.com/remix-run/react-router/${docs.sha}/${file.path}`
+                )
+                  .then((res) => res.text())
+                  .then(async (content) => {
+                    const doc = await processDoc(content);
+                    return {
+                      attributes: doc.attributes as any,
+                      html: doc.html,
+                    };
+                  });
+              }, [docs.sha, file.path])();
             },
           };
           if (

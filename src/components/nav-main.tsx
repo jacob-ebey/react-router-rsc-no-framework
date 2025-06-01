@@ -30,7 +30,6 @@ export type NavMainItem = {
 };
 
 export const NavMain = cache(
-  () => "nav-main",
   async function NavMain() {
     // TODO: "use cache";
     const docs = await getDocs({ preload: true });
@@ -52,7 +51,8 @@ export const NavMain = cache(
         </SidebarMenu>
       </SidebarGroup>
     );
-  }
+  },
+  ["nav-main-component"]
 );
 
 function NavItem({ depth = 0, item }: { depth?: number; item: NavMainItem }) {

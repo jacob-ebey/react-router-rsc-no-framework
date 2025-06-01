@@ -20,7 +20,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default cache(
-  ({ params }) => `doc-cache--${params["*"]}`,
   async function Doc({ params }: { params: { "*": string } }) {
     const docParam = params["*"];
     const docPath = docParam ? `docs/${docParam}.md` : undefined;
@@ -50,5 +49,6 @@ export default cache(
         )}
       </>
     );
-  }
+  },
+  ["doc-cache-component"]
 );
