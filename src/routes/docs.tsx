@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/sidebar";
 import { requireAuthMiddleware } from "@/middleware/auth";
 
-export const unstable_middleware: unstable_MiddlewareFunction[] = [
-  requireAuthMiddleware,
-];
+// export const unstable_middleware: unstable_MiddlewareFunction[] = [
+//   requireAuthMiddleware,
+// ];
 
 export default async function Docs() {
   return (

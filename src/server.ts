@@ -33,6 +33,9 @@ app.get("/.well-known/appspecific/com.chrome.devtools.json", (_, res) => {
 
 app.use(express.static("public"));
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("dist/prerendered"));
+}
 app.use("/client", express.static("dist/client"));
 
 app.use(
@@ -57,5 +60,5 @@ app.use(
   })
 );
 
-app.listen(3000);
+export default app.listen(3000);
 console.log("Server listening on port 3000 (http://localhost:3000)");
