@@ -1,10 +1,11 @@
 "use client";
 
+import { useLocation } from "react-router";
+
 import {
   SidebarMenuButton,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
-import { useLocation } from "react-router";
 
 export function IsActiveSidebarMenuButton(
   props: Omit<React.ComponentProps<typeof SidebarMenuButton>, "isActive"> & {

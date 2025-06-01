@@ -1,5 +1,5 @@
 import type { Plugin } from "unified";
-import type { Root, Paragraph, Text, HTML } from "mdast";
+import type { Root } from "mdast";
 import type { Element } from "hast";
 import { visit } from "unist-util-visit";
 import { fromHtml } from "hast-util-from-html";
@@ -11,7 +11,7 @@ interface CompatOptions {
 
 function createCompatList(
   availableItems: string[],
-  baseUrl: string = "../../start/modes",
+  baseUrl: string = "../../start/modes"
 ): Element {
   const html = `
     <ul class="availability-main">
@@ -36,7 +36,7 @@ function createCompatList(
 
 function createSmallCompatList(
   availableItems: string[],
-  baseUrl: string = "../../start/modes",
+  baseUrl: string = "../../start/modes"
 ): Element {
   const html = `
     <ul class="availability-small">
@@ -80,7 +80,7 @@ const remarkCompatLists: Plugin<[CompatOptions?], Root> = () => {
       if (matchBig || matchSmall) {
         const modes = (matchBig || matchSmall)![1]
           .split(",")
-          .map((mode) => mode.trim())
+          .map((mode: string) => mode.trim())
           .filter(Boolean);
 
         const compatList = matchBig

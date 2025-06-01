@@ -4,3 +4,4 @@
 dist
 local.db
 node_modules
+tmp

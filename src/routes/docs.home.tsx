@@ -1,22 +1,5 @@
-import type { LoaderFunctionArgs } from "react-router";
-import { data } from "react-router/rsc";
-
 import { appName } from "@/global-config";
-import { getDocs } from "@/lib/docs";
 import { processMarkdown } from "@/lib/md";
-
-export async function loader({ params }: LoaderFunctionArgs) {
-  const docParam = params["*"];
-  const docPath = docParam ? `docs/${docParam}.md` : undefined;
-
-  const docs = await getDocs({ preload: docPath });
-  const doc = docs.files.find((file) => file.path === docPath);
-
-  if (!doc) {
-    return data(null, 404);
-  }
-  return null;
-}
 
 export default async function DocsHome() {
   const doc = await processMarkdown(

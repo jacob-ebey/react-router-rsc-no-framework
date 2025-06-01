@@ -14,6 +14,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { cache } from "@/lib/cache";
 import type { Docs } from "@/lib/docs";
 import { getDocs } from "@/lib/docs";
 import { NavLink } from "react-router";
@@ -28,31 +29,35 @@ export type NavMainItem = {
   items?: NavMainItem[];
 };
 
-export async function NavMain() {
-  const docs = await getDocs({ preload: true });
-  const items = await docsToNavItems(docs);
+export const NavMain = cache(
+  () => "nav-main",
+  async function NavMain() {
+    // TODO: "use cache";
+    const docs = await getDocs({ preload: true });
+    const items = await docsToNavItems(docs);
 
-  return (
-    <SidebarGroup>
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <IsActiveSidebarMenuButton asChild pathname="/changelog">
-            <NavLink to="/changelog">
-              <span>Changelog</span>
-            </NavLink>
-          </IsActiveSidebarMenuButton>
-        </SidebarMenuItem>
-        {items.map((item) => (
-          <NavItem key={item.title} item={item} />
-        ))}
-      </SidebarMenu>
-    </SidebarGroup>
-  );
-}
+    return (
+      <SidebarGroup>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <IsActiveSidebarMenuButton asChild pathname="/changelog">
+              <NavLink to="/changelog" className="font-bold">
+                <span>Changelog</span>
+              </NavLink>
+            </IsActiveSidebarMenuButton>
+          </SidebarMenuItem>
+          {items.map((item) => (
+            <NavItem key={item.title} item={item} />
+          ))}
+        </SidebarMenu>
+      </SidebarGroup>
+    );
+  }
+);
 
 function NavItem({ depth = 0, item }: { depth?: number; item: NavMainItem }) {
   if (!item.items?.length) {
-    if (depth > 0) {
+    if (depth !== 0) {
       return (
         <SidebarMenuSubItem>
           <IsActiveSidebarMenuSubButton asChild pathname={item.url}>
@@ -85,7 +90,7 @@ function NavItem({ depth = 0, item }: { depth?: number; item: NavMainItem }) {
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
             <SidebarMenuButton tooltip={item.title}>
-              <span>{item.title}</span>
+              <span className="font-bold">{item.title}</span>
               <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
             </SidebarMenuButton>
           </CollapsibleTrigger>
@@ -111,7 +116,7 @@ function NavItem({ depth = 0, item }: { depth?: number; item: NavMainItem }) {
       <SidebarMenuSubItem>
         <CollapsibleTrigger asChild>
           <SidebarMenuSubButton>
-            <span>{item.title}</span>
+            <span className="font-bold">{item.title}</span>
             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
           </SidebarMenuSubButton>
         </CollapsibleTrigger>
@@ -154,7 +159,7 @@ async function docsToNavItems(docs: Docs): Promise<NavMainItem[]> {
       order: doc.attributes.order ?? Number.MAX_SAFE_INTEGER,
     };
     if (doc.path.endsWith("index.md")) {
-      if (path === "") continue;
+      if (path === "index") continue;
 
       categoriesByPrefix.set(`/${path}`, category);
       if (path.split("/").length < 2) {

@@ -8,7 +8,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { requireAuthMiddleware } from "@/middleware/auth";
-import { Separator } from "@/components/ui/separator";
 
 export const unstable_middleware: unstable_MiddlewareFunction[] = [
   requireAuthMiddleware,
