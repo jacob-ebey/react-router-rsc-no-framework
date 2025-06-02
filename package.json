@@ -3,11 +3,13 @@
   "license": "ISC",
   "scripts": {
     "clean": "rm -rf .parcel-cache dist tmp",
-    "db:update": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:update": "drizzle-kit migrate",
     "build": "parcel build",
     "prerender": "dotenv -- node prerender.mjs",
     "dev": "rm -rf ./dist && dotenv -- parcel",
-    "start": "node dist/server/server.js"
+    "start": "node dist/server/server.js",
+    "start:prod": "npm run db:update && npm start"
   },
   "dependencies": {
     "@libsql/client": "0.15.7",

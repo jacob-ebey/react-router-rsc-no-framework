@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1748883090772,
+      "tag": "0000_curvy_the_liberteens",
+      "breakpoints": true
+    }
+  ]
+}
