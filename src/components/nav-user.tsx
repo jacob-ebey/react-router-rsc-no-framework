@@ -22,7 +22,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { cacheLife } from "@/lib/cache";
 
 export function NavUser({
   user: _user,
@@ -30,8 +29,6 @@ export function NavUser({
   user: { id: string; email: string };
 }) {
   "use cache";
-
-  cacheLife("seconds");
 
   const user = {
     id: _user.id,
