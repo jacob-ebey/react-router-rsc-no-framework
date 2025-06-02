@@ -25,7 +25,6 @@ export function getFileHash() {
   const filehash = path
     .basename(line.slice(start, end))
     .replace(/:\d+:\d+$/, "");
-  console.log({ filehash });
   return filehash;
 }
 
