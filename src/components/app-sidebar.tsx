@@ -3,6 +3,7 @@ import { GalleryVerticalEnd } from "lucide-react";
 import { Link } from "react-router";
 import { version } from "react-router/package.json";
 
+import { NavLogin } from "@/components/nav-login";
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
@@ -50,11 +51,9 @@ export async function AppSidebar({
       <SidebarContent>
         <React.Suspense>{children}</React.Suspense>
       </SidebarContent>
-      {!!user && (
-        <SidebarFooter>
-          <NavUser user={user} />
-        </SidebarFooter>
-      )}
+      <SidebarFooter>
+        {user ? <NavUser user={user} /> : <NavLogin />}
+      </SidebarFooter>
     </Sidebar>
   );
 }

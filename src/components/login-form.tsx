@@ -2,10 +2,9 @@
 
 import { GalleryVerticalEnd } from "lucide-react";
 import { useActionState } from "react";
-import { Link, useSearchParams } from "react-router";
-import type * as v from "valibot";
+import { Link, useLocation, useSearchParams } from "react-router";
 
-import { type LoginWithCredentialsActionSchema } from "@/actions/auth";
+import { loginWithCredentialsAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,22 +13,18 @@ import { cn } from "@/lib/utils";
 
 export function LoginForm({
   className,
-  loginWithCredentialsAction,
+  redirectToCurrentLocation,
   ...props
 }: React.ComponentProps<"div"> & {
-  loginWithCredentialsAction: (
-    previousState:
-      | v.FlatErrors<typeof LoginWithCredentialsActionSchema>
-      | undefined,
-    formData: FormData
-  ) => Promise<
-    v.FlatErrors<typeof LoginWithCredentialsActionSchema> | undefined
-  >;
+  redirectToCurrentLocation?: boolean;
 }) {
   const [searchParams] = useSearchParams();
-  const redirect = searchParams.get("redirect") || afterLoginRedirect;
+  const location = useLocation();
+  const redirect = redirectToCurrentLocation
+    ? location.pathname + location.search
+    : searchParams.get("redirect") || afterLoginRedirect;
 
-  const [state, action, pending] = useActionState(
+  const [login, action, pending] = useActionState(
     loginWithCredentialsAction,
     undefined
   );
@@ -73,9 +68,12 @@ export function LoginForm({
                 type="email"
                 placeholder="m@example.com"
                 required
+                defaultValue={login?.state?.email}
               />
-              {state?.nested?.email && (
-                <div className="text-destructive">{state.nested.email}</div>
+              {login?.errors?.nested?.email && (
+                <div className="text-destructive">
+                  {login.errors.nested.email}
+                </div>
               )}
             </div>
             <div className="grid gap-3">
@@ -87,11 +85,13 @@ export function LoginForm({
                 placeholder="**********"
                 required
               />
-              {state?.nested?.password && (
-                <div className="text-destructive">{state.nested.password}</div>
+              {login?.errors?.nested?.password && (
+                <div className="text-destructive">
+                  {login.errors.nested.password}
+                </div>
               )}
-              {state?.root && (
-                <div className="text-destructive">{state.root}</div>
+              {login?.errors?.root && (
+                <div className="text-destructive">{login.errors.root}</div>
               )}
             </div>
             <Button type="submit" className="w-full" disabled={pending}>

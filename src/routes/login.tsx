@@ -1,4 +1,3 @@
-import { loginWithCredentialsAction } from "@/actions/auth";
 import { LoginForm } from "@/components/login-form";
 import { afterLoginRedirect, appName } from "@/global-config";
 import { redirectIfAuthenticatedMiddleware } from "@/middleware/auth";
@@ -14,7 +13,7 @@ export default function Login() {
 
       <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
         <div className="w-full max-w-sm">
-          <LoginForm loginWithCredentialsAction={loginWithCredentialsAction} />
+          <LoginForm />
         </div>
       </div>
     </>

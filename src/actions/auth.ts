@@ -27,25 +27,43 @@ export async function logoutAction(formData: FormData) {
 
 export const LoginWithCredentialsActionSchema = v.object({
   email: v.pipe(
-    v.string(),
+    v.string("Email is required."),
     v.nonEmpty("Please enter your email."),
     v.email("The email is badly formatted."),
     v.maxLength(255, "Your email is too long.")
   ),
-  password: v.string(),
+  password: v.pipe(
+    v.string("Password is required."),
+    v.nonEmpty("Please enter your password.")
+  ),
   redirect: v.optional(v.string()),
 });
 
+export type LoginWithCredentialsState = {
+  state?: { email?: string };
+  errors: v.FlatErrors<typeof LoginWithCredentialsActionSchema> | undefined;
+};
+
 export async function loginWithCredentialsAction(
-  _: v.FlatErrors<typeof LoginWithCredentialsActionSchema> | undefined,
+  _: LoginWithCredentialsState | undefined,
   formData: FormData
-): Promise<v.FlatErrors<typeof LoginWithCredentialsActionSchema> | undefined> {
+): Promise<LoginWithCredentialsState | undefined> {
   const parsed = v.safeParse(
     LoginWithCredentialsActionSchema,
     Object.fromEntries(formData)
   );
   if (!parsed.success) {
-    return v.flatten<typeof LoginWithCredentialsActionSchema>(parsed.issues);
+    const email =
+      parsed.output &&
+      typeof parsed.output === "object" &&
+      "email" in parsed.output &&
+      typeof parsed.output.email === "string"
+        ? parsed.output.email
+        : undefined;
+    return {
+      errors: v.flatten<typeof LoginWithCredentialsActionSchema>(parsed.issues),
+      state: { email },
+    };
   }
 
   const db = getDb();
@@ -60,13 +78,19 @@ export async function loginWithCredentialsAction(
 
   if (!dbUser) {
     return {
-      root: ["The email or password is incorrect."],
+      errors: {
+        root: ["The email or password is incorrect."],
+      },
+      state: { email: parsed.output.email },
     };
   }
 
   if (!(await compare(parsed.output.password, dbUser.passwordHash))) {
     return {
-      root: ["The email or password is incorrect."],
+      errors: {
+        root: ["The email or password is incorrect."],
+      },
+      state: { email: parsed.output.email },
     };
   }
 
@@ -104,16 +128,35 @@ export const SignupWithCredentialsActionSchema = v.pipe(
   )
 );
 
+export type SignupWithCredentialsState = {
+  state?: { email?: string };
+  errors: v.FlatErrors<typeof SignupWithCredentialsActionSchema> | undefined;
+};
+
 export async function signupWithCredentialsAction(
-  _: v.FlatErrors<typeof SignupWithCredentialsActionSchema> | undefined,
+  _: SignupWithCredentialsState | undefined,
   formData: FormData
-): Promise<v.FlatErrors<typeof SignupWithCredentialsActionSchema> | undefined> {
+): Promise<SignupWithCredentialsState | undefined> {
   const parsed = v.safeParse(
     SignupWithCredentialsActionSchema,
     Object.fromEntries(formData)
   );
   if (!parsed.success) {
-    return v.flatten<typeof SignupWithCredentialsActionSchema>(parsed.issues);
+    const email =
+      parsed.output &&
+      typeof parsed.output === "object" &&
+      "email" in parsed.output &&
+      typeof parsed.output.email === "string"
+        ? parsed.output.email
+        : undefined;
+    return {
+      errors: v.flatten<typeof SignupWithCredentialsActionSchema>(
+        parsed.issues
+      ),
+      state: {
+        email,
+      },
+    };
   }
 
   const db = getDb();
@@ -124,7 +167,12 @@ export async function signupWithCredentialsAction(
 
   if (dbUser) {
     return {
-      root: ["An account with this email already exists."],
+      errors: {
+        root: ["An account with this email already exists."],
+      },
+      state: {
+        email: parsed.output.email,
+      },
     };
   }
 
@@ -140,7 +188,12 @@ export async function signupWithCredentialsAction(
 
   if (!createdUser) {
     return {
-      root: ["Failed to create an account. Please try again."],
+      errors: {
+        root: ["Failed to create an account. Please try again."],
+      },
+      state: {
+        email: parsed.output.email,
+      },
     };
   }
 
