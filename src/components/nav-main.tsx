@@ -15,6 +15,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { docsPrefix } from "@/global-config";
 import type { Docs } from "@/lib/docs";
 import { getDocs } from "@/lib/docs";
 
@@ -152,14 +153,14 @@ async function docsToNavItems(docs: Docs): Promise<NavMainItem[]> {
     const path = doc.path.replace(/^docs\//, "").replace(/(\/index)?\.md$/, "");
     const category = {
       title: doc.attributes.title!,
-      url: `/${path}`,
+      url: `${docsPrefix}${path}`,
       items: [],
       order: doc.attributes.order ?? Number.MAX_SAFE_INTEGER,
     };
     if (doc.path.endsWith("index.md")) {
       if (path === "index") continue;
 
-      categoriesByPrefix.set(`/${path}`, category);
+      categoriesByPrefix.set(`${docsPrefix}${path}`, category);
       if (path.split("/").length < 2) {
         categories.push(category);
       } else {

@@ -1,3 +1,5 @@
+import "server-only";
+
 import { cache } from "react";
 
 import { getDb } from "@/db/client";

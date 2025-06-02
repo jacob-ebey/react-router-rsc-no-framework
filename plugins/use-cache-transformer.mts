@@ -94,30 +94,10 @@ export default new Transformer({
                           true
                         ),
                         babelCore.types.arrayExpression([
-                          babelCore.types.callExpression(getFileHashImported, [
-                            babelCore.types.arrowFunctionExpression(
-                              [],
-                              babelCore.types.newExpression(
-                                babelCore.types.identifier("URL"),
-                                [
-                                  babelCore.types.stringLiteral(
-                                    "./" +
-                                      nodePath.basename(
-                                        asset.filePath,
-                                        nodePath.extname(asset.filePath)
-                                      )
-                                  ),
-                                  babelCore.types.memberExpression(
-                                    babelCore.types.metaProperty(
-                                      babelCore.types.identifier("import"),
-                                      babelCore.types.identifier("meta")
-                                    ),
-                                    babelCore.types.identifier("url")
-                                  ),
-                                ]
-                              )
-                            ),
-                          ]),
+                          babelCore.types.callExpression(
+                            getFileHashImported,
+                            []
+                          ),
                           babelCore.types.stringLiteral(
                             getCacheId(asset.filePath, functionScope)
                           ),
@@ -163,7 +143,7 @@ export default new Transformer({
       });
     }
     asset.setCode(res?.code ?? code);
-    asset.type = "js";
+    asset.invalidateOnBuild();
 
     return [asset];
   },

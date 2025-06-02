@@ -1,5 +1,8 @@
+import "server-only";
+
 import { AsyncLocalStorage } from "node:async_hooks";
 import { createHash } from "node:crypto";
+import * as path from "node:path";
 
 import * as React from "react";
 // @ts-expect-error
@@ -14,19 +17,16 @@ import fsDriver from "unstorage/drivers/fs";
 
 import { RenderCached } from "./cache.client";
 
-export function getFileHash(url: () => URL) {
-  try {
-    return url().pathname;
-  } catch (e) {
-    if (
-      e &&
-      typeof e === "object" &&
-      "input" in e &&
-      typeof e.input === "string"
-    ) {
-      return e.input;
-    }
-  }
+export function getFileHash() {
+  const stack = new Error().stack || "";
+  const line = stack.split("\n")[2];
+  const start = line.lastIndexOf("(") + 1;
+  const end = line.lastIndexOf(")");
+  const filehash = path
+    .basename(line.slice(start, end))
+    .replace(/:\d+:\d+$/, "");
+  console.log({ filehash });
+  return filehash;
 }
 
 type CacheLife =

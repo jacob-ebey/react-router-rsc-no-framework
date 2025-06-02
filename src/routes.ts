@@ -7,6 +7,11 @@ export default [
     lazy: () => import("./root"),
     children: [
       {
+        id: "home",
+        index: true,
+        lazy: () => import("./routes/home"),
+      },
+      {
         id: "login",
         path: "login",
         lazy: () => import("./routes/login"),
@@ -18,6 +23,7 @@ export default [
       },
       {
         id: "docs",
+        path: "docs",
         lazy: () => import("./routes/docs"),
         children: [
           {
@@ -37,14 +43,6 @@ export default [
           },
         ],
       },
-      // {
-      //   id: "doc",
-      //   path: "docs/*",
-      //   lazy: () => import("./routes/docs"),
-      //   children: [
-
-      //   ]
-      // },
     ],
   },
 ] as const satisfies unstable_ServerRouteObject[];

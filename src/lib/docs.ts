@@ -1,3 +1,5 @@
+import "server-only";
+
 // @ts-expect-error - no types
 import cq from "concurrent-queue";
 
@@ -60,7 +62,7 @@ export const getDocs = async ({
             load: () => {
               "use cache";
 
-              cacheLife("max");
+              // cacheLife("max");
 
               return fetch(
                 `https://raw.githubusercontent.com/remix-run/react-router/${sha}/${filepath}`

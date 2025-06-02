@@ -78,6 +78,7 @@
     "remark-rehype": "^11.1.2",
     "remix-utils": "^8.7.0",
     "semver": "^7.7.2",
+    "server-only": "0.0.1",
     "tailwind-merge": "^3.3.0",
     "tailwindcss": "^4.1.8",
     "tw-animate-css": "^1.3.0",

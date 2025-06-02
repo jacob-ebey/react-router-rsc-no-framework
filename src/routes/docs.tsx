@@ -1,5 +1,4 @@
 import { Outlet } from "react-router";
-import { unstable_MiddlewareFunction } from "react-router/rsc";
 
 import { AppSidebar } from "@/components/app-sidebar";
 import {
@@ -7,11 +6,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { requireAuthMiddleware } from "@/middleware/auth";
-
-// export const unstable_middleware: unstable_MiddlewareFunction[] = [
-//   requireAuthMiddleware,
-// ];
 
 export default async function Docs() {
   return (

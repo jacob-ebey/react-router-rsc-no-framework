@@ -14,18 +14,16 @@ const createFromReadableStream =
 export function RenderCached({ cached }: { cached: string }) {
   const children = React.useMemo(
     () =>
-      Promise.resolve(
-        createFromReadableStream(
-          new ReadableStream({
-            start(controller) {
-              controller.enqueue(new TextEncoder().encode(cached));
-              controller.close();
-            },
-          }),
-          {
-            replayConsoleLogs: false,
-          }
-        )
+      createFromReadableStream(
+        new ReadableStream({
+          start(controller) {
+            controller.enqueue(new TextEncoder().encode(cached));
+            controller.close();
+          },
+        }),
+        {
+          replayConsoleLogs: false,
+        }
       ),
     [cached]
   );

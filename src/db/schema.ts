@@ -1,4 +1,6 @@
-import { sqliteTable, integer, text, index } from "drizzle-orm/sqlite-core";
+import "server-only";
+
+import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const user = sqliteTable("user", {
   id: text()
