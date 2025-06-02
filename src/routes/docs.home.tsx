@@ -2,6 +2,8 @@ import { appName } from "@/global-config";
 import { processMarkdown } from "@/lib/md";
 
 export default async function DocsHome() {
+  "use cache";
+
   const doc = await processMarkdown(
     await fetch(
       "https://raw.githubusercontent.com/remix-run/react-router/main/docs/index.md"
@@ -12,6 +14,7 @@ export default async function DocsHome() {
       },
     }
   );
+
   return (
     <>
       <title>{`${doc.attributes?.title} | ${appName}`}</title>

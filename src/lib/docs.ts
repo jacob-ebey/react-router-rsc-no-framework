@@ -89,8 +89,6 @@ export const getDocs = async ({
 };
 
 export function loadChangelog() {
-  "use cache";
-
   return fetch(
     "https://raw.githubusercontent.com/remix-run/react-router/main/CHANGELOG.md"
   )
