@@ -74,26 +74,8 @@ export default function Home() {
         </div>
       </section>
 
-      <Separator className="mb-8" />
-
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Getting Started</h2>
-        <div className="space-y-4 text-sm">
-          <p>
-            This kitchen sink demonstrates various React Router features and
-            patterns. Each example is self-contained and includes relevant code
-            snippets.
-          </p>
-          <p>
-            Navigate through the examples using the links above or the
-            navigation menu. Each example includes documentation and interactive
-            demonstrations.
-          </p>
-        </div>
-      </section>
-
       <footer className="text-center text-sm text-muted-foreground">
-        <Separator className="mb-4" />
+        <Separator className="mb-8" />
         <p>React Router Kitchen Sink Demo</p>
       </footer>
     </div>

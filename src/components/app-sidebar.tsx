@@ -1,8 +1,8 @@
 import * as React from "react";
 import { GalleryVerticalEnd } from "lucide-react";
 import { Link } from "react-router";
+import { version } from "react-router/package.json";
 
-import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
@@ -18,6 +18,7 @@ import { getUserId } from "@/middleware/auth";
 import { getUserById } from "@/lib/user";
 
 export async function AppSidebar({
+  children,
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   const userId = getUserId();
@@ -35,7 +36,11 @@ export async function AppSidebar({
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">{appName}</span>
-                  <span className="">v1.0.0</span>
+                  <span className="">
+                    {version.startsWith("0.0.0-")
+                      ? version.replace(/^0\.0\.0\-/, "")
+                      : `v${version}`}
+                  </span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -43,9 +48,7 @@ export async function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <React.Suspense>
-          <NavMain />
-        </React.Suspense>
+        <React.Suspense>{children}</React.Suspense>
       </SidebarContent>
       {!!user && (
         <SidebarFooter>
