@@ -36,7 +36,13 @@ app.use(express.static("public"));
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("dist/prerendered"));
 }
-app.use("/client", express.static("dist/client"));
+app.use(
+  "/client",
+  express.static("dist/client", {
+    immutable: true,
+    maxAge: "1y",
+  })
+);
 
 app.use(
   createRequestListener(async (request) => {
