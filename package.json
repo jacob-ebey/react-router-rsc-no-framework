@@ -4,7 +4,8 @@
   "scripts": {
     "clean": "rm -rf .parcel-cache dist tmp",
     "db:update": "drizzle-kit push",
-    "build": "parcel build && dotenv -- node prerender.mjs",
+    "build": "parcel build",
+    "prerender": "dotenv -- node prerender.mjs",
     "dev": "rm -rf ./dist && dotenv -- parcel",
     "start": "node dist/server/server.js"
   },
