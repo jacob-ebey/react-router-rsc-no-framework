@@ -76,6 +76,10 @@ const storage = {
     }>(key);
     if (!stored) return null;
 
+    if (process.env.NODE_ENV !== "production") {
+      if (stored.isElement) return null;
+    }
+
     if ((stored.expires ?? 0) < Date.now()) {
       await _storage.remove(key);
       return null;
@@ -83,11 +87,16 @@ const storage = {
 
     return stored;
   },
-  setItem(
+  async setItem(
     key: string,
     value: { rendered: string; isElement: boolean; expires: number }
   ) {
-    return _storage.set(key, value);
+    if (process.env.NODE_ENV !== "production") {
+      if (value.isElement) {
+        return;
+      }
+    }
+    return await _storage.set(key, value);
   },
 };
 

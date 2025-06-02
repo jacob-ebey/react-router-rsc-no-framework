@@ -54,7 +54,7 @@ export async function NavMain() {
 
 function NavItem({ depth = 0, item }: { depth?: number; item: NavMainItem }) {
   if (!item.items?.length) {
-    if (depth !== 0) {
+    if (depth) {
       return (
         <SidebarMenuSubItem>
           <IsActiveSidebarMenuSubButton asChild pathname={item.url}>
@@ -76,7 +76,7 @@ function NavItem({ depth = 0, item }: { depth?: number; item: NavMainItem }) {
     );
   }
 
-  if (depth === 0) {
+  if (!depth) {
     return (
       <Collapsible
         key={item.title}
