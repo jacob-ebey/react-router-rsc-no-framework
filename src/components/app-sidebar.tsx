@@ -3,17 +3,26 @@ import { GalleryVerticalEnd } from "lucide-react";
 import { Link } from "react-router";
 
 import { NavMain } from "@/components/nav-main";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { appName } from "@/global-config";
+import { getUserId } from "@/middleware/auth";
+import { getUserById } from "@/lib/user";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const userId = getUserId();
+  const user = userId ? await getUserById(userId) : null;
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -38,6 +47,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavMain />
         </React.Suspense>
       </SidebarContent>
+      {!!user && (
+        <SidebarFooter>
+          <NavUser user={user} />
+        </SidebarFooter>
+      )}
     </Sidebar>
   );
 }

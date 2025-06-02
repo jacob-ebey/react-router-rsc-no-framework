@@ -1,17 +1,9 @@
 import { appName } from "@/global-config";
-import { processMarkdown } from "@/lib/md";
+import { loadChangelog } from "@/lib/docs";
 
-async function loadChangelog() {
+export default async function Changelog() {
   "use cache";
 
-  return processMarkdown(
-    await fetch(
-      "https://raw.githubusercontent.com/remix-run/react-router/main/CHANGELOG.md"
-    ).then((res) => res.text())
-  );
-}
-
-export default async function DocsHome() {
   const doc = await loadChangelog();
 
   return (

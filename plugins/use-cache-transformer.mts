@@ -179,11 +179,14 @@ function getUsedFunctionArguments(
       identifiers.push(param);
     } else if (babelCore.types.isObjectPattern(param)) {
       for (const prop of param.properties) {
-        if (
-          babelCore.types.isObjectProperty(prop) &&
-          babelCore.types.isIdentifier(prop.key)
-        ) {
-          identifiers.push(prop.key);
+        if (babelCore.types.isObjectProperty(prop)) {
+          if (babelCore.types.isIdentifier(prop.key)) {
+            if (babelCore.types.isIdentifier(prop.value)) {
+              identifiers.push(prop.value);
+            } else {
+              identifiers.push(prop.key);
+            }
+          }
         }
       }
     } else if (babelCore.types.isArrayPattern(param)) {
@@ -199,7 +202,7 @@ function getUsedFunctionArguments(
       identifiers.push(param.argument);
     } else {
       throw new Error(
-        `Unsupported parameter type: ${param.type} in function ${path.node.id?.name || "anonymous"}`
+        `Unsupported parameter type: ${param.type} in function ${(path.node as any).id?.name || "anonymous"}`
       );
     }
   }

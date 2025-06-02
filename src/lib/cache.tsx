@@ -81,19 +81,12 @@ const storage = {
       return null;
     }
 
-    if (process.env.NODE_ENV !== "production") {
-      if (stored.isElement) return null;
-    }
-
     return stored;
   },
   setItem(
     key: string,
     value: { rendered: string; isElement: boolean; expires: number }
   ) {
-    if (process.env.NODE_ENV !== "production") {
-      if (value.isElement) return;
-    }
     return _storage.set(key, value);
   },
 };

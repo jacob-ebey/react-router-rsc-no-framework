@@ -26,6 +26,7 @@ export type MarkdownDoc = {
 
 function getDocsList() {
   "use cache";
+
   return fetch("https://github-md.com/remix-run/react-router/main").then(
     (res) =>
       res.json() as Promise<{
@@ -35,7 +36,11 @@ function getDocsList() {
   );
 }
 
-const processDoc = createDocProcessor();
+const processDoc = cq()
+  .limit({ concurrency: 1 })
+  .process(async (content: string) => {
+    return await processMarkdown(content);
+  });
 
 export const getDocs = async ({
   preload,
@@ -52,10 +57,12 @@ export const getDocs = async ({
 
           const result = {
             ...file,
-            load: async () => {
+            load: () => {
               "use cache";
+
               cacheLife("max");
-              return await fetch(
+
+              return fetch(
                 `https://raw.githubusercontent.com/remix-run/react-router/${sha}/${filepath}`
               )
                 .then((res) => res.text())
@@ -81,10 +88,12 @@ export const getDocs = async ({
   });
 };
 
-function createDocProcessor() {
-  return cq()
-    .limit({ concurrency: 1 })
-    .process(async (content: string) => {
-      return await processMarkdown(content);
-    });
+export function loadChangelog() {
+  "use cache";
+
+  return fetch(
+    "https://raw.githubusercontent.com/remix-run/react-router/main/CHANGELOG.md"
+  )
+    .then((res) => res.text())
+    .then(processMarkdown);
 }
