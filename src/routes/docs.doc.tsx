@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { data } from "react-router/rsc";
 
+import { RouteErrorBoundary } from "@/components/error-boundary";
 import { NotFoundCard } from "@/components/not-found-card";
 import { appName } from "@/global-config";
 import { getDocs } from "@/lib/docs";
@@ -10,10 +11,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const docPath = docParam ? `docs/${docParam}.md` : undefined;
 
   const docs = await getDocs({ preload: docPath });
-  const doc = docs.files.find((file) => file.path === docPath);
+  const doc = await docs.files.find((file) => file.path === docPath)?.load();
 
-  if (!doc) {
-    return data(null, 404);
+  if (!doc || doc.attributes.hidden) {
+    throw data(null, 404);
   }
   return null;
 }
@@ -49,4 +50,8 @@ export default async function Doc({ params }: { params: { "*": string } }) {
       )}
     </>
   );
+}
+
+export function ErrorBoundary() {
+  return <RouteErrorBoundary />;
 }

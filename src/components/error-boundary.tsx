@@ -11,15 +11,21 @@ function ErrorBoundary({ error }: { error: unknown }) {
   let message = "An unexpected error occurred.";
   if (isRouteErrorResponse(error)) {
     header = "" + error.status;
-    message = error.statusText || "An unexpected error occurred.";
+    message =
+      error.statusText ||
+      (error.status === 404
+        ? "Page not found."
+        : "An unexpected error occurred.");
   } else {
     // console.error(error);
   }
 
   return (
-    <div>
-      <p className="error-boundary__header">{header}</p>
-      <p className="error-boundary__message">{message}</p>
+    <div className="flex flex-1 flex-col gap-4 px-4 py-8">
+      <div className="prose">
+        <h1 className="">{header}</h1>
+        <p className="">{message}</p>
+      </div>
     </div>
   );
 }

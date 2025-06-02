@@ -143,7 +143,9 @@ async function docsToNavItems(docs: Docs): Promise<NavMainItem[]> {
         };
       })
     )
-  ).filter((doc) => Boolean(doc.attributes?.title));
+  ).filter(
+    (doc) => Boolean(doc.attributes?.title) && !Boolean(doc.attributes?.hidden)
+  );
 
   const categories: (NavMainItem & { order: number })[] = [];
   const categoriesByPrefix = new Map<string, NavMainItem>();

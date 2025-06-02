@@ -22,6 +22,7 @@ export type MarkdownDoc = {
   attributes: {
     title?: string;
     order?: number;
+    hidden?: boolean;
   };
   html: string;
 };
@@ -62,7 +63,7 @@ export const getDocs = async ({
             load: () => {
               "use cache";
 
-              // cacheLife("max");
+              cacheLife("max");
 
               return fetch(
                 `https://raw.githubusercontent.com/remix-run/react-router/${sha}/${filepath}`
@@ -71,7 +72,7 @@ export const getDocs = async ({
                 .then(async (content) => {
                   const doc = await processDoc(content);
                   return {
-                    attributes: doc.attributes as any,
+                    attributes: (doc.attributes as any) ?? {},
                     html: doc.html,
                   };
                 });
