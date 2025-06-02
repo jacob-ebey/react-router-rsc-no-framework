@@ -6,7 +6,7 @@ import * as path from "node:path";
 
 import * as React from "react";
 // @ts-expect-error
-import { renderToReadableStream } from "react-server-dom-parcel/server.edge";
+import { unstable_prerender } from "react-server-dom-parcel/static.edge";
 import {
   createFromReadableStream,
   encodeReply,
@@ -181,7 +181,9 @@ export function cache<Func extends (...args: any[]) => any>(
       globalThis.reactCache.set(
         key,
         Promise.resolve<ReadableStream<Uint8Array>>(
-          renderToReadableStream(result)
+          unstable_prerender(result).then(
+            ({ prelude }: { prelude: ReadableStream<Uint8Array> }) => prelude
+          )
         )
           .then((stream): Promise<string> => new Response(stream).text())
           .then(async (rendered) => {
