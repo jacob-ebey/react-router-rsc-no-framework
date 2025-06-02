@@ -14,6 +14,21 @@ import fsDriver from "unstorage/drivers/fs";
 
 import { RenderCached } from "./cache.client";
 
+export function getFileHash(url: () => URL) {
+  try {
+    return url().pathname;
+  } catch (e) {
+    if (
+      e &&
+      typeof e === "object" &&
+      "input" in e &&
+      typeof e.input === "string"
+    ) {
+      return e.input;
+    }
+  }
+}
+
 type CacheLife =
   | "seconds"
   | "minutes"

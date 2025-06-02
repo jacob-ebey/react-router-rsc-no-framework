@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { NavLink } from "react-router";
 
 import {
   Collapsible,
@@ -16,7 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import type { Docs } from "@/lib/docs";
 import { getDocs } from "@/lib/docs";
-import { NavLink } from "react-router";
+
 import {
   IsActiveSidebarMenuButton,
   IsActiveSidebarMenuSubButton,

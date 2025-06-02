@@ -1,4 +1,5 @@
 import * as crypto from "node:crypto";
+import * as nodePath from "node:path";
 
 import * as babelCore from "@babel/core";
 import { transformAsync, transformFromAstAsync } from "@babel/core";
@@ -30,6 +31,7 @@ export default new Transformer({
     }
 
     let cacheImported: babelCore.types.Identifier | null = null;
+    let getFileHashImported: babelCore.types.Identifier | null = null;
     let programPath!: babelCore.NodePath<babelCore.types.Program>;
     const babelConfig = {
       filename: asset.filePath,
@@ -49,10 +51,15 @@ export default new Transformer({
                 }
                 path.remove();
 
-                if (!cacheImported) {
+                if (!cacheImported || !getFileHashImported) {
                   cacheImported = addNamedImport(
                     programPath,
                     config.cacheExportName,
+                    config.cacheImportPath
+                  );
+                  getFileHashImported = addNamedImport(
+                    programPath,
+                    "getFileHash",
                     config.cacheImportPath
                   );
                 }
@@ -87,6 +94,30 @@ export default new Transformer({
                           true
                         ),
                         babelCore.types.arrayExpression([
+                          babelCore.types.callExpression(getFileHashImported, [
+                            babelCore.types.arrowFunctionExpression(
+                              [],
+                              babelCore.types.newExpression(
+                                babelCore.types.identifier("URL"),
+                                [
+                                  babelCore.types.stringLiteral(
+                                    "./" +
+                                      nodePath.basename(
+                                        asset.filePath,
+                                        nodePath.extname(asset.filePath)
+                                      )
+                                  ),
+                                  babelCore.types.memberExpression(
+                                    babelCore.types.metaProperty(
+                                      babelCore.types.identifier("import"),
+                                      babelCore.types.identifier("meta")
+                                    ),
+                                    babelCore.types.identifier("url")
+                                  ),
+                                ]
+                              )
+                            ),
+                          ]),
                           babelCore.types.stringLiteral(
                             getCacheId(asset.filePath, functionScope)
                           ),
@@ -127,7 +158,7 @@ export default new Transformer({
       }
       asset.setAST({
         type: "babel",
-        version: "7.0.0",
+        version: "7.27.4",
         program: res.ast,
       });
     }
