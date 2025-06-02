@@ -7,7 +7,7 @@ import * as v from "valibot";
 
 import { getDb } from "@/db/client";
 import * as schema from "@/db/schema";
-import { loginPath, afterLoginRedirect } from "@/global-config";
+import { afterLoginRedirect, afterLogoutRedirect } from "@/global-config";
 import { setUserId } from "@/middleware/auth";
 
 export const LogoutSchema = v.object({
@@ -18,7 +18,10 @@ export async function logoutAction(formData: FormData) {
   setUserId(undefined);
   const parsed = v.safeParse(LogoutSchema, Object.fromEntries(formData));
   throw redirect(
-    safeRedirect(parsed.success ? parsed.output.redirect : undefined, loginPath)
+    safeRedirect(
+      parsed.success ? parsed.output.redirect : undefined,
+      afterLogoutRedirect
+    )
   );
 }
 

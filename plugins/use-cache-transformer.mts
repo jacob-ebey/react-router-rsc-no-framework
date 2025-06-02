@@ -1,8 +1,6 @@
 import * as crypto from "node:crypto";
-import * as nodePath from "node:path";
 
 import * as babelCore from "@babel/core";
-import { transformAsync, transformFromAstAsync } from "@babel/core";
 import { Transformer } from "@parcel/plugin";
 import { addNamed as addNamedImport } from "@babel/helper-module-imports";
 // @ts-expect-error These modules don't have types
@@ -129,7 +127,7 @@ export default new Transformer({
         babelConfig
       );
     } else {
-      res = await transformAsync(code, babelConfig);
+      res = await babelCore.transformAsync(code, babelConfig);
     }
     if (res?.ast) {
       const map = await asset.getMap();

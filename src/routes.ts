@@ -23,12 +23,11 @@ export default [
       },
       {
         id: "docs",
-        path: "docs",
         lazy: () => import("./routes/docs"),
         children: [
           {
             id: "docs.home",
-            index: true,
+            path: "home",
             lazy: () => import("./routes/docs.home"),
           },
           {

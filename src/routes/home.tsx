@@ -1,3 +1,4 @@
+import { logoutAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,19 +8,26 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { docsHome, loginPath } from "@/global-config";
+import { getUserId } from "@/middleware/auth";
 import { Link } from "react-router";
 
 export default function Home() {
+  const userId = getUserId();
+
   const examples = [
     {
       title: "Authentication Flow",
       description: "A complete authentication flow with login, and signup.",
-      href: "/login",
+      href: loginPath,
+      hrefText: "Go to Login",
+      authenticatedAction: logoutAction,
+      authenticatedActionText: "Logout",
     },
     {
       title: "Docs Site",
       description: "An example of a documentation site using React Router.",
-      href: "/docs",
+      href: docsHome,
     },
   ];
 
@@ -47,9 +55,19 @@ export default function Home() {
                 <CardDescription>{example.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" asChild className="w-full">
-                  <Link to={example.href}>View Example</Link>
-                </Button>
+                {!!userId && !!example.authenticatedAction ? (
+                  <form action={example.authenticatedAction}>
+                    <Button type="submit" variant="outline" className="w-full">
+                      {example.authenticatedActionText}
+                    </Button>
+                  </form>
+                ) : (
+                  <Button variant="outline" asChild className="w-full">
+                    <Link to={example.href}>
+                      {example.hrefText || "View Example"}
+                    </Link>
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ))}
