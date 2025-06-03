@@ -47,7 +47,6 @@ type ChatProps = ChatPropsWithoutSuggestions | ChatPropsWithSuggestions;
 export function Chat({
   append,
   className,
-  error,
   handleInputChange,
   handleSubmit,
   input,
@@ -59,7 +58,6 @@ export function Chat({
   suggestions,
   transcribeAudio,
 }: ChatProps) {
-  console.log({ error });
   // const lastMessage = messages.at(-1);
   const isEmpty = messages.length === 0;
   // const isTyping = lastMessage?.role === "user";

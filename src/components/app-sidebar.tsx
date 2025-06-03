@@ -15,7 +15,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { appName } from "@/global-config";
-import { getUserId } from "@/middleware/auth";
+import { getUserId } from "@/auth/middleware";
 import { getUserById } from "@/lib/user";
 
 export async function AppSidebar({

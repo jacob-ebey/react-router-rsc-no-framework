@@ -1,6 +1,6 @@
 import { LogIn } from "lucide-react";
 
-import { loginWithCredentialsAction } from "@/actions/auth";
+import { loginWithCredentialsAction } from "@/auth/actions";
 import { LoginForm } from "@/components/login-form";
 import {
   Dialog,

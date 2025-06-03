@@ -4,7 +4,7 @@ import { GalleryVerticalEnd } from "lucide-react";
 import { useActionState } from "react";
 import { Link, useSearchParams } from "react-router";
 
-import { signupWithCredentialsAction } from "@/actions/auth";
+import { signupWithCredentialsAction } from "@/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

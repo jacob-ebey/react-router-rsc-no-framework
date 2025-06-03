@@ -2,7 +2,8 @@ import { Outlet, ScrollRestoration } from "react-router";
 
 import { DelegateLinks } from "@/components/delegate-links";
 import { RouteErrorBoundary } from "@/components/error-boundary";
-import { authMiddleware } from "@/middleware/auth";
+import { Toaster } from "@/components/ui/sonner";
+import { authMiddleware } from "@/auth/middleware";
 
 import "./styles.css";
 
@@ -18,6 +19,7 @@ export function Layout({ children }: { children?: React.ReactNode }) {
       </head>
       <body className="flex flex-col h-svh">
         {children}
+        <Toaster />
         <DelegateLinks />
         <ScrollRestoration />
       </body>

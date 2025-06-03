@@ -19,11 +19,6 @@ import { docsPrefix } from "@/global-config";
 import type { Docs } from "../lib/docs";
 import { getDocs } from "../lib/docs";
 
-import {
-  IsActiveSidebarMenuButton,
-  IsActiveSidebarMenuSubButton,
-} from "./nav.client";
-
 export type DocsNavItem = {
   title: string;
   url: string;
@@ -40,11 +35,11 @@ export async function DocsNav() {
     <SidebarGroup>
       <SidebarMenu>
         <SidebarMenuItem>
-          <IsActiveSidebarMenuButton asChild pathname="/changelog">
+          <SidebarMenuButton asChild>
             <NavLink to="/changelog" className="font-bold">
               <span>Changelog</span>
             </NavLink>
-          </IsActiveSidebarMenuButton>
+          </SidebarMenuButton>
         </SidebarMenuItem>
         {items.map((item) => (
           <NavItem key={item.title} item={item} />
@@ -59,21 +54,21 @@ function NavItem({ depth = 0, item }: { depth?: number; item: DocsNavItem }) {
     if (depth) {
       return (
         <SidebarMenuSubItem>
-          <IsActiveSidebarMenuSubButton asChild pathname={item.url}>
+          <SidebarMenuSubButton asChild>
             <NavLink to={item.url}>
               <span>{item.title}</span>
             </NavLink>
-          </IsActiveSidebarMenuSubButton>
+          </SidebarMenuSubButton>
         </SidebarMenuSubItem>
       );
     }
     return (
       <SidebarMenuItem>
-        <IsActiveSidebarMenuButton asChild pathname={item.url}>
+        <SidebarMenuButton asChild>
           <NavLink to={item.url}>
             <span>{item.title}</span>
           </NavLink>
-        </IsActiveSidebarMenuButton>
+        </SidebarMenuButton>
       </SidebarMenuItem>
     );
   }

@@ -1,6 +1,6 @@
 import { LoginForm } from "@/components/login-form";
 import { afterLoginRedirect, appName } from "@/global-config";
-import { redirectIfAuthenticatedMiddleware } from "@/middleware/auth";
+import { redirectIfAuthenticatedMiddleware } from "@/auth/middleware";
 
 export const unstable_middleware = [
   redirectIfAuthenticatedMiddleware(afterLoginRedirect),

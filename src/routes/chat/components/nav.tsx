@@ -1,6 +1,7 @@
 import { MessageSquare, Plus } from "lucide-react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
+import { getUserId } from "@/auth/middleware";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -10,8 +11,9 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { getDb } from "@/db/client";
-import { getUserId } from "@/middleware/auth";
 import { chatHome } from "@/global-config";
+
+import { ChatDropdown } from "./nav.client";
 
 export async function ChatNav() {
   const db = getDb();
@@ -39,11 +41,12 @@ export async function ChatNav() {
         <SidebarGroupLabel>Chats</SidebarGroupLabel>
         {chats.map(({ id, title }) => (
           <SidebarMenuItem key={id}>
-            <SidebarMenuButton className="truncate" title={title} asChild>
-              <Link to={`${chatHome}/${id}`}>
-                <MessageSquare /> {title}
-              </Link>
+            <SidebarMenuButton title={title} asChild>
+              <NavLink to={`${chatHome}/${id}`}>
+                <MessageSquare /> <span className="truncate">{title}</span>
+              </NavLink>
             </SidebarMenuButton>
+            <ChatDropdown chatId={id} />
           </SidebarMenuItem>
         ))}
       </SidebarMenu>

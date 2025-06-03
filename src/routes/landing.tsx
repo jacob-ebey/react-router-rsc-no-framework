@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import { logoutAction } from "@/actions/auth";
+import { logoutAction } from "@/auth/actions";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { chatHome, docsHome, loginPath } from "@/global-config";
-import { getUserId } from "@/middleware/auth";
+import { getUserId } from "@/auth/middleware";
 
 export default function Landing() {
   const userId = getUserId();

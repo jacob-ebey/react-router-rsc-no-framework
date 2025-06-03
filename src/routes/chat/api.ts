@@ -5,7 +5,7 @@ import { env } from "std-env";
 
 import { getDb } from "@/db/client";
 import * as schema from "@/db/schema";
-import { authMiddleware, getUserId } from "@/middleware/auth";
+import { authMiddleware, getUserId } from "@/auth/middleware";
 
 export const handler: FetchHandler = async (request) => {
   return authMiddleware(

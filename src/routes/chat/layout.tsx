@@ -6,7 +6,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { requireAuthMiddleware } from "@/middleware/auth";
+import { requireAuthMiddleware } from "@/auth/middleware";
 
 import { ChatNav } from "./components/nav";
 

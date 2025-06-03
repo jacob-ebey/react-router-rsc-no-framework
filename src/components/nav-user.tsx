@@ -6,7 +6,7 @@ import {
   User,
 } from "lucide-react";
 
-import { logoutAction } from "@/actions/auth";
+import { logoutAction } from "@/auth/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,

@@ -86,10 +86,15 @@ export function setUserId(userId: string | undefined) {
   }
 }
 
-export const requireAuthMiddleware: unstable_MiddlewareFunction = async (
-  { request },
-  next
-) => {
+export function actionRequiresUserId() {
+  const userId = getUserId();
+  if (!userId) {
+    throw redirect(loginPath);
+  }
+  return userId;
+}
+
+export function requireUserId(request: Request) {
   const userId = getUserId();
   if (!userId) {
     const url = new URL(request.url);
@@ -97,6 +102,14 @@ export const requireAuthMiddleware: unstable_MiddlewareFunction = async (
       `${loginPath}?${new URLSearchParams({ redirect: url.pathname + url.search })}`
     );
   }
+  return userId;
+}
+
+export const requireAuthMiddleware: unstable_MiddlewareFunction = async (
+  { request },
+  next
+) => {
+  requireUserId(request);
   return next();
 };
 

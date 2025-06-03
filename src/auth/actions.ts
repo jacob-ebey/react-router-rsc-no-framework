@@ -8,7 +8,8 @@ import * as v from "valibot";
 import { getDb } from "@/db/client";
 import * as schema from "@/db/schema";
 import { afterLoginRedirect, afterLogoutRedirect } from "@/global-config";
-import { setUserId } from "@/middleware/auth";
+
+import { setUserId } from "./middleware";
 
 export const LogoutSchema = v.object({
   redirect: v.optional(v.string()),
