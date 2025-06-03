@@ -1,5 +1,6 @@
 import { appName } from "@/global-config";
-import { loadChangelog } from "@/lib/docs";
+
+import { loadChangelog } from "./lib/docs";
 
 export default async function Changelog() {
   "use cache";

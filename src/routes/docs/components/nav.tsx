@@ -16,21 +16,21 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { docsPrefix } from "@/global-config";
-import type { Docs } from "@/lib/docs";
-import { getDocs } from "@/lib/docs";
+import type { Docs } from "../lib/docs";
+import { getDocs } from "../lib/docs";
 
 import {
   IsActiveSidebarMenuButton,
   IsActiveSidebarMenuSubButton,
-} from "./nav-main.client";
+} from "./nav.client";
 
-export type NavMainItem = {
+export type DocsNavItem = {
   title: string;
   url: string;
-  items?: NavMainItem[];
+  items?: DocsNavItem[];
 };
 
-export async function NavMain() {
+export async function DocsNav() {
   "use cache";
 
   const docs = await getDocs({ preload: true });
@@ -54,7 +54,7 @@ export async function NavMain() {
   );
 }
 
-function NavItem({ depth = 0, item }: { depth?: number; item: NavMainItem }) {
+function NavItem({ depth = 0, item }: { depth?: number; item: DocsNavItem }) {
   if (!item.items?.length) {
     if (depth) {
       return (
@@ -131,7 +131,7 @@ function NavItem({ depth = 0, item }: { depth?: number; item: NavMainItem }) {
   );
 }
 
-async function docsToNavItems(docs: Docs): Promise<NavMainItem[]> {
+async function docsToNavItems(docs: Docs): Promise<DocsNavItem[]> {
   const loadedDocs = (
     await Promise.all(
       docs.files.map(async (doc) => {
@@ -147,9 +147,9 @@ async function docsToNavItems(docs: Docs): Promise<NavMainItem[]> {
     (doc) => Boolean(doc.attributes?.title) && !Boolean(doc.attributes?.hidden)
   );
 
-  const categories: (NavMainItem & { order: number })[] = [];
-  const categoriesByPrefix = new Map<string, NavMainItem>();
-  const needsSort: (NavMainItem & { order: number })[] = [];
+  const categories: (DocsNavItem & { order: number })[] = [];
+  const categoriesByPrefix = new Map<string, DocsNavItem>();
+  const needsSort: (DocsNavItem & { order: number })[] = [];
 
   for (const doc of loadedDocs) {
     const path = doc.path.replace(/^docs\//, "").replace(/(\/index)?\.md$/, "");

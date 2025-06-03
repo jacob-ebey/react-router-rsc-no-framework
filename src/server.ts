@@ -1,8 +1,7 @@
-import * as React from "react" with { env: "react-client" };
 import { createRequestListener } from "@mjackson/node-fetch-server";
-import express from "express";
-import compression from "compression";
 import { drizzle } from "drizzle-orm/libsql";
+import express from "express";
+import * as React from "react" with { env: "react-client" };
 import { env } from "std-env";
 // @ts-expect-error - no types
 import { renderToReadableStream as renderHTMLToReadableStream } from "react-dom/server.edge" with { env: "react-client" };
@@ -13,9 +12,10 @@ import {
 // @ts-expect-error
 import { createFromReadableStream } from "react-server-dom-parcel/client.edge" with { env: "react-client" };
 
-import { callServer } from "./react-server" with { env: "react-server" };
 import { DbStorage } from "./db/client";
 import * as schema from "./db/schema";
+import { callServer } from "./react-server" with { env: "react-server" };
+import * as chatAPI from "./routes/chat/api";
 
 if (!env.DB_FILE_NAME) {
   throw new Error("DB_FILE_NAME environment variable is not set");
@@ -24,7 +24,6 @@ if (!env.DB_FILE_NAME) {
 const db = drizzle(env.DB_FILE_NAME, { schema });
 
 const app = express();
-app.use(compression());
 
 app.get("/.well-known/appspecific/com.chrome.devtools.json", (_, res) => {
   res.status(404);
@@ -42,6 +41,10 @@ app.use(
     immutable: true,
     maxAge: "1y",
   })
+);
+
+app.post("/api/chat", (req, res) =>
+  DbStorage.run(db, createRequestListener(chatAPI.handler).bind(null, req, res))
 );
 
 app.use(

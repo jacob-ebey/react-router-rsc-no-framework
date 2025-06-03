@@ -1,9 +1,10 @@
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
-
-export const user = sqliteTable("user", {
-  id: text()
-    .$defaultFn(() => crypto.randomUUID())
-    .primaryKey(),
-  email: text().notNull().unique(),
-  passwordHash: text().notNull(),
-});
+export { user } from "@/lib/user.schema";
+export {
+  chat,
+  chatMessage,
+  chatMessageAttachment,
+  chatMessageAttachmentRelations,
+  chatMessageRelations,
+  chatRelations,
+  chatUserRelations,
+} from "@/routes/chat/db/schema";

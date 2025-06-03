@@ -1,5 +1,6 @@
 import { appName } from "@/global-config";
-import { processMarkdown } from "@/lib/md";
+
+import { processMarkdown } from "./lib/md";
 
 export default async function DocsHome() {
   "use cache";

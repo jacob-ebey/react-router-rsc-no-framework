@@ -5,3 +5,4 @@ export const afterLoginRedirect = "/";
 export const afterLogoutRedirect = "/";
 export const docsPrefix = "/";
 export const docsHome = "/home";
+export const chatHome = "/chat";

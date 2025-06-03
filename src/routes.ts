@@ -9,7 +9,7 @@ export default [
       {
         id: "home",
         index: true,
-        lazy: () => import("./routes/home"),
+        lazy: () => import("./routes/landing"),
       },
       {
         id: "login",
@@ -23,22 +23,34 @@ export default [
       },
       {
         id: "docs",
-        lazy: () => import("./routes/docs"),
+        lazy: () => import("./routes/docs/layout"),
         children: [
           {
             id: "docs.home",
             path: "home",
-            lazy: () => import("./routes/docs.home"),
+            lazy: () => import("./routes/docs/home"),
           },
           {
             id: "docs.changelog",
             path: "changelog",
-            lazy: () => import("./routes/docs.changelog"),
+            lazy: () => import("./routes/docs/changelog"),
           },
           {
             id: "docs.doc",
             path: "*",
-            lazy: () => import("./routes/docs.doc"),
+            lazy: () => import("./routes/docs/doc"),
+          },
+        ],
+      },
+      {
+        id: "chat",
+        path: "chat",
+        lazy: () => import("./routes/chat/layout"),
+        children: [
+          {
+            id: "chat.route",
+            path: ":chatId?",
+            lazy: () => import("./routes/chat/chat"),
           },
         ],
       },

@@ -4,7 +4,8 @@ import { data } from "react-router/rsc";
 import { RouteErrorBoundary } from "@/components/error-boundary";
 import { NotFoundCard } from "@/components/not-found-card";
 import { appName } from "@/global-config";
-import { getDocs } from "@/lib/docs";
+
+import { getDocs } from "./lib/docs";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const docParam = params["*"];

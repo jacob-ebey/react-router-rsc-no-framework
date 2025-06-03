@@ -6,12 +6,12 @@
  *   - MIT https://github.com/ggoodman/nostalgie/blob/45f3f6356684287a214dab667064ec9776def933/LICENSE
  *   - https://github.com/ggoodman/nostalgie/blob/45f3f6356684287a214dab667064ec9776def933/src/worker/mdxCompiler.ts
  */
-import { getHighlighter, toShikiTheme } from "shiki";
+import { getHighlighter, toShikiTheme } from "shiki-old";
 import rangeParser from "parse-numeric-range";
 import parseFrontMatter from "front-matter";
 import type * as Hast from "hast";
 import type * as Unist from "unist";
-import type * as Shiki from "shiki";
+import type * as Shiki from "shiki-old";
 import type * as Unified from "unified";
 
 // import themeJson from "./base16.json";

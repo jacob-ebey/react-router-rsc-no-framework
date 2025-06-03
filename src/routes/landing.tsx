@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 import { logoutAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,11 +10,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { docsHome, loginPath } from "@/global-config";
+import { chatHome, docsHome, loginPath } from "@/global-config";
 import { getUserId } from "@/middleware/auth";
-import { Link } from "react-router";
 
-export default function Home() {
+export default function Landing() {
   const userId = getUserId();
 
   const examples = [
@@ -28,6 +29,11 @@ export default function Home() {
       title: "Docs Site",
       description: "An example of a documentation site using React Router.",
       href: docsHome,
+    },
+    {
+      title: "AI Chat",
+      description: "An example of an AI chat app.",
+      href: chatHome,
     },
   ];
 
