@@ -1,4 +1,4 @@
-export { user } from "@/lib/user.schema";
+export { user } from "@/auth/user.schema";
 export {
   chat,
   chatMessage,

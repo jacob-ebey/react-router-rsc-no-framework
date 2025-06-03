@@ -1,7 +1,7 @@
 import { relations, sql } from "drizzle-orm";
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-import { user } from "@/lib/user.schema";
+import { user } from "@/auth/user.schema";
 
 export const chat = sqliteTable("chat", {
   id: text()

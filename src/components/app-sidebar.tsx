@@ -1,8 +1,10 @@
-import * as React from "react";
 import { GalleryVerticalEnd } from "lucide-react";
+import * as React from "react";
 import { Link } from "react-router";
 import { version } from "react-router/package.json";
 
+import { getUserId } from "@/auth/middleware";
+import { getUserById } from "@/auth/user";
 import { NavLogin } from "@/components/nav-login";
 import { NavUser } from "@/components/nav-user";
 import {
@@ -15,8 +17,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { appName } from "@/global-config";
-import { getUserId } from "@/auth/middleware";
-import { getUserById } from "@/lib/user";
 
 export async function AppSidebar({
   children,
