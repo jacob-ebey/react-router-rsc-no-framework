@@ -11,18 +11,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenuAction } from "@/components/ui/sidebar";
 
-import { deleteChatAction } from "../actions";
+import { deleteBoardAction } from "../actions";
 import { toast } from "sonner";
 
-export function ChatDropdown({ chatId }: { chatId: string }) {
-  const [, deleteAction, deleting] = useActionState<undefined, FormData>(
+export function BoardDropdown({ boardId }: { boardId: string }) {
+  const [_, deleteAction, deleting] = useActionState<undefined, FormData>(
     async (_, formData) => {
-      const errors = await deleteChatAction(formData);
+      const errors = await deleteBoardAction(formData);
 
       if (errors) {
-        toast.error("Failed to delete chat.", { position: "top-right" });
+        toast.error(errors.other?.join(" ") || "Failed to delete board.", {
+          position: "top-right",
+        });
       } else {
-        toast.success("Chat deleted successfully.", { position: "top-right" });
+        toast.success("Board deleted successfully.", { position: "top-right" });
       }
 
       return undefined;
@@ -39,10 +41,10 @@ export function ChatDropdown({ chatId }: { chatId: string }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="start" asChild>
         <form>
-          <input type="hidden" name="chatId" value={chatId} />
+          <input type="hidden" name="boardId" value={boardId} />
           <DropdownMenuItem asChild>
             <button className="w-full" formAction={deleteAction}>
-              Delete Chat
+              Delete Board
             </button>
           </DropdownMenuItem>
         </form>

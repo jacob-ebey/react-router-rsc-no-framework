@@ -7,4 +7,13 @@ export {
   chatMessageRelations,
   chatRelations,
   chatUserRelations,
-} from "@/routes/chat/db/schema";
+} from "@/routes/chat/schema";
+export {
+  board,
+  boardCard,
+  boardCardRelations,
+  boardColumn,
+  boardColumnRelations,
+  boardRelations,
+  boardUserRelations,
+} from "@/routes/trellix/schema";

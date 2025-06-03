@@ -8,16 +8,16 @@ import {
 } from "@/components/ui/sidebar";
 import { requireAuthMiddleware } from "@/auth/middleware";
 
-import { ChatNav } from "./components/nav";
+import { TrellixNav } from "./components/nav";
 
 export const unstable_middleware = [requireAuthMiddleware];
 
-export default async function ChatLayout() {
+export default async function TrellixLayout() {
   return (
     <>
       <SidebarProvider>
         <AppSidebar>
-          <ChatNav />
+          <TrellixNav />
         </AppSidebar>
         <SidebarInset className="flex-1 flex flex-col min-h-0">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 md:hidden sticky top-0 bg-background border-b border-border z-20">

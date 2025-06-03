@@ -22,6 +22,35 @@ export default [
         lazy: () => import("./routes/signup"),
       },
       {
+        id: "chat",
+        path: "chat",
+        lazy: () => import("./routes/chat/layout"),
+        children: [
+          {
+            id: "chat.route",
+            path: ":chatId?",
+            lazy: () => import("./routes/chat/chat"),
+          },
+        ],
+      },
+      {
+        id: "trellix",
+        path: "trellix",
+        lazy: () => import("./routes/trellix/layout"),
+        children: [
+          {
+            id: "trellix.home",
+            index: true,
+            lazy: () => import("./routes/trellix/home"),
+          },
+          {
+            id: "trellix.board",
+            path: ":id",
+            lazy: () => import("./routes/trellix/board"),
+          },
+        ],
+      },
+      {
         id: "docs",
         lazy: () => import("./routes/docs/layout"),
         children: [
@@ -39,18 +68,6 @@ export default [
             id: "docs.doc",
             path: "*",
             lazy: () => import("./routes/docs/doc"),
-          },
-        ],
-      },
-      {
-        id: "chat",
-        path: "chat",
-        lazy: () => import("./routes/chat/layout"),
-        children: [
-          {
-            id: "chat.route",
-            path: ":chatId?",
-            lazy: () => import("./routes/chat/chat"),
           },
         ],
       },

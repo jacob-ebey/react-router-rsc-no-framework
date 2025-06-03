@@ -3,9 +3,9 @@ import { redirect } from "react-router/rsc";
 
 import { requireUserId } from "@/auth/middleware";
 import { getDb } from "@/db/client";
+import { chatHome } from "@/global-config";
 
 import { Chat } from "./chat.client";
-import { chatHome } from "@/global-config";
 
 export async function loader({
   params: { chatId },
@@ -15,6 +15,7 @@ export async function loader({
 
   if (chatId) {
     const db = getDb();
+
     const chat = await db.query.chat.findFirst({
       columns: { id: true },
       where: (chat, { and, eq }) =>

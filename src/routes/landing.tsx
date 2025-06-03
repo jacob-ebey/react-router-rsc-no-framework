@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { chatHome, docsHome, loginPath } from "@/global-config";
+import { chatHome, docsHome, loginPath, trellixHome } from "@/global-config";
 import { getUserId } from "@/auth/middleware";
 
 export default function Landing() {
@@ -34,6 +34,11 @@ export default function Landing() {
       title: "AI Chat",
       description: "An example of an AI chat app.",
       href: chatHome,
+    },
+    {
+      title: "Trellix",
+      description: "A Trello-like application built with React Router.",
+      href: trellixHome,
     },
   ];
 
