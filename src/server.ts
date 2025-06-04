@@ -1,4 +1,5 @@
 import { createRequestListener } from "@mjackson/node-fetch-server";
+import compression from "compression";
 import { drizzle } from "drizzle-orm/libsql";
 import express from "express";
 import * as React from "react";
@@ -30,13 +31,14 @@ app.get("/.well-known/appspecific/com.chrome.devtools.json", (_, res) => {
   res.send("Not Found");
 });
 
-app.use(express.static("public"));
+app.use(compression(), express.static("public"));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("dist/prerendered"));
 }
 app.use(
   "/client",
+  compression(),
   express.static("dist/client", {
     immutable: true,
     maxAge: "1y",
