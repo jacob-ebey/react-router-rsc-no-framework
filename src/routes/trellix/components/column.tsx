@@ -38,7 +38,7 @@ export function Column({ name, columnId, items }: ColumnProps) {
     <div
       className={
         "flex-shrink-0 flex flex-col overflow-hidden max-h-full w-80 border-slate-400 rounded-xl shadow-sm shadow-slate-400 bg-slate-100 " +
-        (acceptDrop ? `outline outline-2 outline-brand-red` : ``)
+        (acceptDrop ? `outline-2 outline-brand-red` : ``)
       }
       onDragOver={(event) => {
         if (
