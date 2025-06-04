@@ -84,8 +84,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return { ok: true };
 }
 
-export default function BoardRoute() {
-  return <Board />;
+export default function BoardRoute({
+  loaderData: { board },
+}: {
+  loaderData: Awaited<ReturnType<typeof loader>>;
+}) {
+  return (
+    <>
+      <title>{`${board.name || "Board"} | Trellix`}</title>
+      <Board />
+    </>
+  );
 }
 
 export function ErrorBoundary() {

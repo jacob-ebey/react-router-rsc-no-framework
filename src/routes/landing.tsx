@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 import { logoutAction } from "@/auth/actions";
+import { getUserId } from "@/auth/middleware";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +11,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { chatHome, docsHome, loginPath, trellixHome } from "@/global-config";
-import { getUserId } from "@/auth/middleware";
+import {
+  appName,
+  chatHome,
+  docsHome,
+  loginPath,
+  trellixHome,
+} from "@/global-config";
 
 export default function Landing() {
   const userId = getUserId();
@@ -44,6 +50,8 @@ export default function Landing() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <title>{appName}</title>
+
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">React Router Kitchen Sink</h1>
         <p className="text-lg text-muted-foreground mb-2">

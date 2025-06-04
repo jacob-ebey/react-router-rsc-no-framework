@@ -2,7 +2,7 @@ import { type ActionFunctionArgs, type LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router/rsc";
 
 import { requireUserId } from "@/auth/middleware";
-import { trellixHome } from "@/global-config";
+import { appName, trellixHome } from "@/global-config";
 import { badRequest } from "@/lib/http";
 
 import { Boards, NewBoard } from "./home.client";
@@ -42,7 +42,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Projects() {
   return (
     <div className="h-full">
-      <title>Boards</title>
+      <title>{`Boards | ${appName}`}</title>
       <NewBoard />
       <Boards />
     </div>

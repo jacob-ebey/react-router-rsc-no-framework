@@ -5,10 +5,10 @@ import { useFetchers, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 
 import type { loader } from "./board";
-import { INTENTS, type RenderedItem } from "./types";
 import { Column } from "./components/column";
-import { NewColumn } from "./components/new-column";
 import { EditableText } from "./components/components";
+import { NewColumn } from "./components/new-column";
+import { INTENTS, type RenderedItem } from "./types";
 
 export function Board() {
   let { board } = useLoaderData<typeof loader>();
@@ -59,7 +59,6 @@ export function Board() {
       ref={scrollContainerRef}
       style={board.color ? { backgroundColor: board.color } : undefined}
     >
-      <title>{`${board.name || "Board"} | Trellix`}</title>
       <h1>
         <EditableText
           value={board.name}
