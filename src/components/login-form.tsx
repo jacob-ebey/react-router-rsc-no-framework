@@ -9,7 +9,7 @@ import { loginWithCredentialsAction } from "@/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { afterLoginRedirect, signupPath } from "@/global-config";
+import { afterLoginRedirect, appName, signupPath } from "@/global-config";
 import { cn } from "@/lib/utils";
 
 export function LoginForm({
@@ -44,9 +44,9 @@ export function LoginForm({
               <div className="flex size-8 items-center justify-center rounded-md">
                 <GalleryVerticalEnd className="size-6" />
               </div>
-              <span className="sr-only">Acme Inc.</span>
+              <span className="sr-only">{appName}.</span>
             </Link>
-            <h1 className="text-xl font-bold">Welcome to Acme Inc.</h1>
+            <h1 className="text-xl font-bold">Welcome to {appName}.</h1>
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link
@@ -68,6 +68,7 @@ export function LoginForm({
                 name="email"
                 type="email"
                 placeholder="m@example.com"
+                autoComplete="email"
                 required
                 defaultValue={login?.state?.email}
               />
@@ -84,6 +85,7 @@ export function LoginForm({
                 name="password"
                 type="password"
                 placeholder="**********"
+                autoComplete="current-password"
                 required
               />
               {login?.errors?.nested?.password && (

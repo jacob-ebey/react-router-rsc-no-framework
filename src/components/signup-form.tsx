@@ -9,7 +9,7 @@ import { signupWithCredentialsAction } from "@/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { afterLoginRedirect, loginPath } from "@/global-config";
+import { afterLoginRedirect, appName, loginPath } from "@/global-config";
 import { cn } from "@/lib/utils";
 
 export function SignupForm({
@@ -38,9 +38,9 @@ export function SignupForm({
               <div className="flex size-8 items-center justify-center rounded-md">
                 <GalleryVerticalEnd className="size-6" />
               </div>
-              <span className="sr-only">Acme Inc.</span>
+              <span className="sr-only">{appName}.</span>
             </Link>
-            <h1 className="text-xl font-bold">Welcome to Acme Inc.</h1>
+            <h1 className="text-xl font-bold">Welcome to {appName}.</h1>
             <div className="text-center text-sm">
               Already have an account?{" "}
               <Link
@@ -62,6 +62,7 @@ export function SignupForm({
                 name="email"
                 type="email"
                 placeholder="m@example.com"
+                autoComplete="email"
                 required
                 defaultValue={signup?.state?.email}
               />
@@ -78,6 +79,7 @@ export function SignupForm({
                 name="password"
                 type="password"
                 placeholder="**********"
+                autoComplete="new-password"
                 required
               />
               {signup?.errors?.nested?.password && (
@@ -93,6 +95,7 @@ export function SignupForm({
                 name="confirmPassword"
                 type="password"
                 placeholder="**********"
+                autoComplete="new-password"
                 required
               />
               {signup?.errors?.nested?.confirmPassword && (
