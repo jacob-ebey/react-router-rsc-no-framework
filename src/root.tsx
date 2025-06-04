@@ -1,11 +1,12 @@
 import { Outlet, ScrollRestoration } from "react-router";
 
+import { authMiddleware } from "@/auth/middleware";
 import { DelegateLinks } from "@/components/delegate-links";
 import { RouteErrorBoundary } from "@/components/error-boundary";
 import { Toaster } from "@/components/ui/sonner";
-import { authMiddleware } from "@/auth/middleware";
 
 import "./styles.css";
+import { GlobalLoadingIndicator } from "./root.client";
 
 export const unstable_middleware = [authMiddleware];
 
@@ -19,6 +20,7 @@ export function Layout({ children }: { children?: React.ReactNode }) {
       </head>
       <body className="flex flex-col h-svh">
         {children}
+        <GlobalLoadingIndicator />
         <Toaster />
         <DelegateLinks />
         <ScrollRestoration />
