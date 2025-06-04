@@ -55,10 +55,7 @@ export default function Landing() {
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">React Router Kitchen Sink</h1>
         <p className="text-lg text-muted-foreground mb-2">
-          A comprehensive collection of React Router examples and patterns
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Explore different routing concepts and implementation patterns
+          A collection of React Router examples and patterns
         </p>
       </header>
 
@@ -92,11 +89,6 @@ export default function Landing() {
           ))}
         </div>
       </section>
-
-      <footer className="text-center text-sm text-muted-foreground">
-        <Separator className="mb-8" />
-        <p>React Router Kitchen Sink Demo</p>
-      </footer>
     </div>
   );
 }
