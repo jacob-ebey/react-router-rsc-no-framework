@@ -1,10 +1,13 @@
-import {
-  CreditCard,
-  EllipsisVertical,
-  LogOut,
-  BellRing,
-  User,
-} from "lucide-react";
+// @ts-expect-error - no types
+import BellRing from "lucide-react/dist/esm/icons/bell-ring.js";
+// @ts-expect-error - no types
+import CreditCard from "lucide-react/dist/esm/icons/credit-card.js";
+// @ts-expect-error - no types
+import EllipsisVertical from "lucide-react/dist/esm/icons/ellipsis-vertical.js";
+// @ts-expect-error - no types
+import LogOut from "lucide-react/dist/esm/icons/log-out.js";
+// @ts-expect-error - no types
+import User from "lucide-react/dist/esm/icons/user.js";
 
 import { logoutAction } from "@/auth/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

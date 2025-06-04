@@ -1,7 +1,11 @@
 "use client";
 
-import { Loader, MoreHorizontal } from "lucide-react";
 import { useActionState } from "react";
+
+// @ts-expect-error - no types
+import Loader from "lucide-react/dist/esm/icons/loader.js";
+// @ts-expect-error - no types
+import MoreHorizontal from "lucide-react/dist/esm/icons/more-horizontal.js";
 
 import {
   DropdownMenu,

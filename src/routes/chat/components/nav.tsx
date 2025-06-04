@@ -1,5 +1,9 @@
-import { MessageSquare, Plus } from "lucide-react";
 import { Link, NavLink } from "react-router";
+
+// @ts-expect-error - no types
+import MessageSquare from "lucide-react/dist/esm/icons/message-square.js";
+// @ts-expect-error - no types
+import Plus from "lucide-react/dist/esm/icons/plus.js";
 
 import { getUserId } from "@/auth/middleware";
 import {

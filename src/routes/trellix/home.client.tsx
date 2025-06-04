@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/button";
 
 import { Label, LabeledInput } from "./components/input";
 import { INTENTS } from "./types";
-import { Trash } from "lucide-react";
+// @ts-expect-error - no types
+import Trash from "lucide-react/dist/esm/icons/trash.js";
 
 import type { loader } from "./home";
 import { trellixHome } from "@/global-config";

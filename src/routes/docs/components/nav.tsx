@@ -1,4 +1,5 @@
-import { ChevronRight } from "lucide-react";
+// @ts-expect-error - no types
+import ChevronRight from "lucide-react/dist/esm/icons/chevron-right.js";
 import { NavLink } from "react-router";
 
 import {

@@ -1,6 +1,6 @@
-import { LogIn } from "lucide-react";
+// @ts-expect-error - no types
+import LogIn from "lucide-react/dist/esm/icons/log-in.js";
 
-import { loginWithCredentialsAction } from "@/auth/actions";
 import { LoginForm } from "@/components/login-form";
 import {
   Dialog,

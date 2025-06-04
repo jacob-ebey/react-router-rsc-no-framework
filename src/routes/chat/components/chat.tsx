@@ -1,6 +1,12 @@
 import type { Message } from "@ai-sdk/react";
-import { ArrowDown, ThumbsDown, ThumbsUp } from "lucide-react";
 import { forwardRef, useCallback, useRef, useState } from "react";
+
+// @ts-expect-error - no types
+import ArrowDown from "lucide-react/dist/esm/icons/arrow-down.js";
+// @ts-expect-error - no types
+import ThumbsDown from "lucide-react/dist/esm/icons/thumbs-down.js";
+// @ts-expect-error - no types
+import ThumbsUp from "lucide-react/dist/esm/icons/thumbs-up.js";
 
 import { Button } from "@/components/ui/button";
 // import { useAutoScroll } from "@/hooks/use-auto-scroll";

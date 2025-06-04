@@ -1,4 +1,5 @@
-import { Dot } from "lucide-react";
+// @ts-expect-error - no types
+import Dot from "lucide-react/dist/esm/icons/dot.js";
 
 export function TypingIndicator() {
   return (

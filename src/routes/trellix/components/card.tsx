@@ -1,9 +1,8 @@
-import { Trash } from "lucide-react";
+// @ts-expect-error - no types
+import Trash from "lucide-react/dist/esm/icons/trash.js";
 import { useState } from "react";
 import { useFetcher, useSubmit } from "react-router";
 import invariant from "tiny-invariant";
-
-import { Card as BaseCard } from "@/components/ui/card";
 
 import { CONTENT_TYPES, INTENTS, ItemMutation } from "../types";
 

@@ -3,8 +3,18 @@
 import type { Message } from "@ai-sdk/react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { motion } from "framer-motion";
-import { Ban, ChevronRight, Code2, Loader2, Terminal } from "lucide-react";
+
 import React, { useMemo, useState } from "react";
+// @ts-expect-error - no types
+import Ban from "lucide-react/dist/esm/icons/ban.js";
+// @ts-expect-error - no types
+import ChevronRight from "lucide-react/dist/esm/icons/chevron-right.js";
+// @ts-expect-error - no types
+import Code2 from "lucide-react/dist/esm/icons/code-2.js";
+// @ts-expect-error - no types
+import Loader2 from "lucide-react/dist/esm/icons/loader-2.js";
+// @ts-expect-error - no types
+import Terminal from "lucide-react/dist/esm/icons/terminal.js";
 
 import {
   Collapsible,

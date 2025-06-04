@@ -2,7 +2,13 @@
 
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
+
+// @ts-expect-error - no types
+import CheckIcon from "lucide-react/dist/esm/icons/check.js"
+// @ts-expect-error - no types
+import ChevronRightIcon from "lucide-react/dist/esm/icons/chevron-right.js"
+// @ts-expect-error - no types
+import CircleIcon from "lucide-react/dist/esm/icons/circle.js"
 
 import { cn } from "@/lib/utils"
 

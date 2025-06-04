@@ -1,7 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+// @ts-expect-error - no types
+import X from "lucide-react/dist/esm/icons/x.js";
 
 interface InterruptPromptProps {
   isOpen: boolean;

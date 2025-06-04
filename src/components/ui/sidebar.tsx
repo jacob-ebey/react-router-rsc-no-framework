@@ -3,7 +3,8 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
-import { PanelLeftIcon } from "lucide-react";
+// @ts-expect-error - no types
+import PanelLeftIcon from "lucide-react/dist/esm/icons/panel-left.js";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";

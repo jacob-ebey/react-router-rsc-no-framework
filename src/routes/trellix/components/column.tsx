@@ -1,10 +1,9 @@
-import { Plus } from "lucide-react";
+// @ts-expect-error - no types
+import Plus from "lucide-react/dist/esm/icons/plus.js";
 import { useState, useRef } from "react";
 import { flushSync } from "react-dom";
 import { useSubmit } from "react-router";
 import invariant from "tiny-invariant";
-
-// import { Icon } from "~/icons/icons";
 
 import {
   ItemMutation,

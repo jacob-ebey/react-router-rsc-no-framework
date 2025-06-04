@@ -1,4 +1,5 @@
-import { ArrowLeft, Home } from "lucide-react";
+// @ts-expect-error - no types
+import Home from "lucide-react/dist/esm/icons/home.js";
 
 import {
   Card,

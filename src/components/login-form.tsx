@@ -1,6 +1,7 @@
 "use client";
 
-import { GalleryVerticalEnd } from "lucide-react";
+// @ts-expect-error - no types
+import GalleryVerticalEnd from "lucide-react/dist/esm/icons/gallery-vertical-end.js";
 import { useActionState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
 

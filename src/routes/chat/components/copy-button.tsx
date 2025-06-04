@@ -1,6 +1,9 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
+// @ts-expect-error - no types
+import Check from "lucide-react/dist/esm/icons/check.js";
+// @ts-expect-error - no types
+import Copy from "lucide-react/dist/esm/icons/copy.js";
 
 import { Button } from "@/components/ui/button";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";

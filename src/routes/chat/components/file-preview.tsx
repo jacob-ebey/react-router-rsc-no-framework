@@ -1,8 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FileIcon, X } from "lucide-react";
 import React, { useEffect } from "react";
+
+// @ts-expect-error - no types
+import FileIcon from "lucide-react/dist/esm/icons/file.js";
+// @ts-expect-error - no types
+import X from "lucide-react/dist/esm/icons/x.js";
 
 interface FilePreviewProps {
   file: File;

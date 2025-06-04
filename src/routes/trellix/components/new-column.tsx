@@ -1,4 +1,5 @@
-import { Plus } from "lucide-react";
+// @ts-expect-error - no types
+import Plus from "lucide-react/dist/esm/icons/plus.js";
 import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { Form, useSubmit } from "react-router";

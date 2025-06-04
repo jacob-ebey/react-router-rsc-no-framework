@@ -1,9 +1,21 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUp, Info, Loader2, Mic, Paperclip, Square } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { omit } from "remeda";
+
+// @ts-expect-error - no types
+import ArrowUp from "lucide-react/dist/esm/icons/arrow-up.js";
+// @ts-expect-error - no types
+import Info from "lucide-react/dist/esm/icons/info.js";
+// @ts-expect-error - no types
+import Loader2 from "lucide-react/dist/esm/icons/loader-2.js";
+// // @ts-expect-error - no types
+// import Mic from "lucide-react/dist/esm/icons/mic.js";
+// @ts-expect-error - no types
+import Paperclip from "lucide-react/dist/esm/icons/paperclip.js";
+// @ts-expect-error - no types
+import Square from "lucide-react/dist/esm/icons/square.js";
 
 import { Button } from "@/components/ui/button";
 // import { useAudioRecording } from "@/hooks/use-audio-recording";
