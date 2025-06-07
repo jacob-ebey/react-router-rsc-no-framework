@@ -34,23 +34,22 @@ export default async function EcommHome() {
                 </Button>
               </div>
             </div>
-            <div className="mx-auto lg:mx-0">
-              <img
-                loading="eager"
-                src={featuredCollection?.image?.url}
-                alt={featuredCollection?.image?.altText || ""}
-                width={600}
-                height={400}
-                className="rounded-lg object-cover w-full aspect-video"
-              />
-            </div>
+
+            <img
+              loading="eager"
+              src={featuredCollection?.image?.url}
+              alt={featuredCollection?.image?.altText || ""}
+              width={600}
+              height={400}
+              className="rounded-lg object-cover w-full aspect-video"
+            />
           </div>
         </div>
       </section>
       <section className="py-12 md:py-24 bg-muted">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {featuredCollection?.products.nodes.map((product) => (
+            {featuredCollection?.products.nodes.map((product, index) => (
               <div
                 key={product.id}
                 className="flex flex-col bg-background rounded-lg shadow-sm border p-4"
@@ -60,7 +59,7 @@ export default async function EcommHome() {
                   className="block mb-4"
                 >
                   <img
-                    loading="lazy"
+                    loading={index < 3 ? "eager" : "lazy"}
                     src={product.featuredImage?.url}
                     alt={product.featuredImage?.altText || ""}
                     className="rounded-md object-cover w-full aspect-video"
