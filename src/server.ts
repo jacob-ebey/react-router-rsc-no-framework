@@ -4,7 +4,6 @@ import { drizzle } from "drizzle-orm/libsql";
 import express from "express";
 import * as React from "react";
 import { env } from "std-env";
-// @ts-expect-error - no types
 import { renderToReadableStream as renderHTMLToReadableStream } from "react-dom/server.edge" with { env: "react-client" };
 import {
   unstable_routeRSCServerRequest,
@@ -16,7 +15,6 @@ import { createFromReadableStream } from "react-server-dom-parcel/client.edge" w
 import { DbStorage } from "./db/client";
 import * as schema from "./db/schema";
 import { callServer } from "./react-server";
-import * as chatAPI from "./routes/chat/api";
 
 if (!env.DB_FILE_NAME) {
   throw new Error("DB_FILE_NAME environment variable is not set");
@@ -43,10 +41,6 @@ app.use(
     immutable: true,
     maxAge: "1y",
   })
-);
-
-app.post("/api/chat", (req, res) =>
-  DbStorage.run(db, createRequestListener(chatAPI.handler).bind(null, req, res))
 );
 
 app.use(

@@ -10,6 +10,7 @@ import LogOut from "lucide-react/dist/esm/icons/log-out.js";
 import User from "lucide-react/dist/esm/icons/user.js";
 
 import { logoutAction } from "@/auth/actions";
+import { RedirectToSelf } from "@/components/redirect-to-self";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -25,8 +26,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
-import { LogoutRedirectLocation } from "./nav-user.client";
 
 export function NavUser({
   user: _user,
@@ -128,7 +127,7 @@ export function NavUser({
         </SidebarMenuItem>
       </SidebarMenu>
       <form id="nav-user-logout-form" action={logoutAction} className="hidden">
-        <LogoutRedirectLocation />
+        <RedirectToSelf />
       </form>
     </>
   );

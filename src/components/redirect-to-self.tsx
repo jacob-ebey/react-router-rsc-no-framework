@@ -2,7 +2,7 @@
 
 import { useLocation } from "react-router";
 
-export function LogoutRedirectLocation() {
+export function RedirectToSelf() {
   const location = useLocation();
   return (
     <input

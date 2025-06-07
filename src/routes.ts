@@ -22,6 +22,11 @@ export default [
         lazy: () => import("./routes/signup"),
       },
       {
+        id: "chat.api",
+        path: "api/chat",
+        lazy: () => import("./routes/chat/api"),
+      },
+      {
         id: "chat",
         path: "chat",
         lazy: () => import("./routes/chat/layout"),
@@ -47,6 +52,18 @@ export default [
             id: "trellix.board",
             path: ":id",
             lazy: () => import("./routes/trellix/board"),
+          },
+        ],
+      },
+      {
+        id: "ecomm",
+        path: "ecomm",
+        lazy: () => import("./routes/ecomm/layout"),
+        children: [
+          {
+            id: "ecomm.home",
+            index: true,
+            lazy: () => import("./routes/ecomm/home"),
           },
         ],
       },

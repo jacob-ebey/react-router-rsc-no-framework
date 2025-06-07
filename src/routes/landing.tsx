@@ -32,6 +32,11 @@ export default function Landing() {
       authenticatedActionText: "Logout",
     },
     {
+      title: "Ecommerce",
+      description: "An example of an ecommerce site using React Router.",
+      href: "/ecomm",
+    },
+    {
       title: "Docs Site",
       description: "An example of a documentation site using React Router.",
       href: docsHome,
