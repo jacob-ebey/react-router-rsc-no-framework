@@ -3,7 +3,7 @@
 // @ts-expect-error
 import ClipboardCopy from "lucide-react/dist/esm/icons/clipboard-copy.js";
 import { useState } from "react";
-import { Link, useLocation } from "react-router";
+import { useLocation } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
