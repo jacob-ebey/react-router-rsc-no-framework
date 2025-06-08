@@ -54,7 +54,7 @@ export default async function ChatRoute({
     <>
       <title>{`${title || "Chat"} | ${appName}`}</title>
       <Chat
-        key={chatId}
+        key={chatId || crypto.randomUUID()}
         chatId={chatId}
         initialMessages={messages.map((message) => ({
           content: message.content,

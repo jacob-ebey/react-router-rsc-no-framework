@@ -8,4 +8,4 @@ export const docsHome = "/home";
 export const chatHome = "/chat";
 export const trellixHome = "/trellix";
 export const ecommHome = "/ecomm";
-export const ecommFeaturedCollection = "featured";
+export const ecommFeaturedCollection = "men";

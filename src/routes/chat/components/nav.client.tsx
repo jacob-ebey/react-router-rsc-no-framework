@@ -6,6 +6,7 @@ import { useActionState } from "react";
 import Loader from "lucide-react/dist/esm/icons/loader.js";
 // @ts-expect-error - no types
 import MoreHorizontal from "lucide-react/dist/esm/icons/more-horizontal.js";
+import { toast } from "sonner";
 
 import {
   DropdownMenu,
@@ -16,7 +17,6 @@ import {
 import { SidebarMenuAction } from "@/components/ui/sidebar";
 
 import { deleteChatAction } from "../actions";
-import { toast } from "sonner";
 
 export function ChatDropdown({ chatId }: { chatId: string }) {
   const [, deleteAction, deleting] = useActionState<undefined, FormData>(

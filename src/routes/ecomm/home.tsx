@@ -5,9 +5,10 @@ import { fetchGraphQL } from "@/lib/graphql";
 import { Link } from "react-router";
 import { env } from "std-env";
 
+import { ProductCard } from "./components/product-card";
+
 export default async function EcommHome() {
   const { featuredCollection } = await getHomeData();
-  console.log(featuredCollection);
 
   return (
     <div>
@@ -46,39 +47,30 @@ export default async function EcommHome() {
           </div>
         </div>
       </section>
+
       <section className="py-12 md:py-24 bg-muted">
-        <div className="container mx-auto px-4 md:px-6">
+        <div className="container mx-auto px-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {featuredCollection?.products.nodes.map((product, index) => (
-              <div
-                key={product.id}
-                className="flex flex-col bg-background rounded-lg shadow-sm border p-4"
-              >
-                <Link
-                  to={`${ecommHome}/product/${product.handle}`}
-                  className="block mb-4"
-                >
-                  <img
-                    loading={index < 3 ? "eager" : "lazy"}
-                    src={product.featuredImage?.url}
-                    alt={product.featuredImage?.altText || ""}
-                    className="rounded-md object-cover w-full aspect-video"
-                  />
-                </Link>
-                <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
-                <p className="text-sm mb-3">{product.description}</p>
-                <div className="flex-1" />
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold">
-                    {product.priceRange.minVariantPrice.amount}
-                    <span className="text-sm">
-                      {product.priceRange.minVariantPrice.currencyCode}
-                    </span>
-                  </span>
-                  <Button type="button">Add to Cart</Button>
-                </div>
-              </div>
-            ))}
+            {featuredCollection?.products.nodes.map(
+              ({
+                description,
+                featuredImage,
+                handle,
+                id,
+                priceRange,
+                title,
+              }) => (
+                <ProductCard
+                  key={id}
+                  description={description}
+                  featuredImage={featuredImage}
+                  handle={handle}
+                  id={id}
+                  priceRange={priceRange}
+                  title={title}
+                />
+              )
+            )}
           </div>
         </div>
       </section>
@@ -86,7 +78,43 @@ export default async function EcommHome() {
   );
 }
 
-async function getHomeData(userId?: string) {
+const HOME_QUERY = gql(`
+  query HomePage($featuredCollectionHandle: String) {
+    featuredCollection: collection(handle: $featuredCollectionHandle) {
+      id
+      title
+      description
+      image {
+        altText
+        url
+      }
+      products(first: 20) {
+        nodes {
+          id
+          handle
+          title
+          description
+          featuredImage {
+            altText
+            url
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+  }
+`);
+
+async function getHomeData() {
   "use cache";
 
   const url = env.SHOPIFY_API;
@@ -111,35 +139,3 @@ async function getHomeData(userId?: string) {
     }
   );
 }
-
-const HOME_QUERY = gql(`
-  query HomePageQuery($featuredCollectionHandle: String) {
-    featuredCollection: collection(handle: $featuredCollectionHandle) {
-      id
-      title
-      description
-      image {
-        altText
-        url
-      }
-      products(first: 9) {
-        nodes {
-          id
-          handle
-          title
-          description
-          featuredImage {
-            altText
-            url
-          }
-          priceRange {
-            minVariantPrice {
-              amount
-              currencyCode
-            }
-          }
-        }
-      }
-    }
-  }
-`);

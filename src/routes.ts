@@ -65,6 +65,11 @@ export default [
             index: true,
             lazy: () => import("./routes/ecomm/home"),
           },
+          {
+            id: "ecomm.product",
+            path: "product/:handle",
+            lazy: () => import("./routes/ecomm/product"),
+          },
         ],
       },
       {

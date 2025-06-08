@@ -4,15 +4,23 @@ import { RouteErrorBoundary } from "@/components/error-boundary";
 
 import { Header } from "./components/header";
 
-export default function EcommLayout() {
+export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <Outlet />
+      {children}
     </>
   );
 }
 
+export default function EcommLayout() {
+  return <Outlet />;
+}
+
 export function ErrorBoundary() {
-  return <RouteErrorBoundary />;
+  return (
+    <div className="container mx-auto">
+      <RouteErrorBoundary />
+    </div>
+  );
 }

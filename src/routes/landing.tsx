@@ -15,6 +15,7 @@ import {
   appName,
   chatHome,
   docsHome,
+  ecommHome,
   loginPath,
   trellixHome,
 } from "@/global-config";
@@ -34,7 +35,7 @@ export default function Landing() {
     {
       title: "Ecommerce",
       description: "An example of an ecommerce site using React Router.",
-      href: "/ecomm",
+      href: ecommHome,
     },
     {
       title: "Docs Site",

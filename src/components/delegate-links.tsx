@@ -1,6 +1,6 @@
 "use client";
 
-import { useDelegatedAnchors } from "remix-utils/use-delegated-anchors";
+import { useDelegatedAnchors } from "@/hooks/use-delegated-anchors";
 
 export function DelegateLinks() {
   useDelegatedAnchors({

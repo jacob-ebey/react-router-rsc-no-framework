@@ -21,6 +21,8 @@ import {
 import { ecommHome, loginPath, signupPath } from "@/global-config";
 import { fetchGraphQL } from "@/lib/graphql";
 
+import { LinkWithRedirect } from "./header.client";
+
 export async function Header() {
   const userId = getUserId();
 
@@ -105,13 +107,13 @@ export async function Header() {
           ) : (
             <div className="flex items-center gap-2 ml-auto">
               <Button asChild variant="outline" size="sm">
-                <Link to={loginPath}>
+                <LinkWithRedirect to={loginPath}>
                   <Login className="sm:hidden" />
                   <span className="sr-only sm:not-sr-only">Login</span>
-                </Link>
+                </LinkWithRedirect>
               </Button>
               <Button asChild size="sm" className="hidden sm:inline-flex">
-                <Link to={signupPath}>Signup</Link>
+                <LinkWithRedirect to={signupPath}>Signup</LinkWithRedirect>
               </Button>
             </div>
           )}
