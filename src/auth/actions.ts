@@ -9,14 +9,15 @@ import { getDb } from "@/db/client";
 import * as schema from "@/db/schema";
 import { afterLoginRedirect, afterLogoutRedirect } from "@/global-config";
 
-import { setUserId } from "./middleware";
+import { clearAuthSession, setUserId } from "./middleware";
 
 export const LogoutSchema = v.object({
   redirect: v.optional(v.string()),
 });
 
 export async function logoutAction(formData: FormData) {
-  setUserId(undefined);
+  clearAuthSession();
+
   const parsed = v.safeParse(LogoutSchema, Object.fromEntries(formData));
   throw redirect(
     safeRedirect(

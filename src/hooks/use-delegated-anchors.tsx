@@ -44,9 +44,8 @@ export function useDelegatedAnchors(
       navigate(
         { pathname, search, hash },
         {
-					preventScrollReset: !!anchor.getAttribute("data-prevent-scroll-reset"),
-					viewTransition: anchor.getAttribute("data-view-transition") === "true",
-				}
+          preventScrollReset: anchor.hasAttribute("data-prevent-scroll-reset"),
+        }
       );
 
       event.preventDefault();

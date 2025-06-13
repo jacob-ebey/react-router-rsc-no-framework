@@ -21,15 +21,21 @@ import {
 import { ecommHome, loginPath, signupPath } from "@/global-config";
 import { fetchGraphQL } from "@/lib/graphql";
 
+import { getCartData } from "../cart/api";
+import { getCartId } from "../cart/middleware";
+import { CartButton } from "./cart";
 import { LinkWithRedirect } from "./header.client";
 
 export async function Header() {
   const userId = getUserId();
+  const cartId = getCartId();
+
+  const cartDataPromise = cartId ? getCartData(cartId) : null;
 
   const { collections, shop } = await getHeaderData();
 
   return (
-    <header className="border-b sticky top-0 z-50 bg-background">
+    <header className="border-b z-40 bg-background">
       <nav className="flex gap-4 container mx-auto p-4">
         <div className="flex items-center gap-4">
           <Link to={ecommHome} className="flex items-center gap-2">
@@ -38,7 +44,7 @@ export async function Header() {
             </span>
           </Link>
         </div>
-        <div className="flex items-center ml-auto md:flex-1 md:ml-0 gap-1">
+        <div className="flex items-center ml-auto md:flex-1 md:ml-0 gap-4">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -85,7 +91,7 @@ export async function Header() {
               <NavigationMenuItem>
                 <NavigationMenuLink
                   href={`${ecommHome}/products`}
-                  className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
+                  className="relative group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
                 >
                   Products
                 </NavigationMenuLink>
@@ -117,6 +123,9 @@ export async function Header() {
               </Button>
             </div>
           )}
+          <div className="flex items-center gap-2">
+            <CartButton />
+          </div>
         </div>
       </nav>
     </header>

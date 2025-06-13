@@ -9,5 +9,10 @@ export function GlobalLoadingIndicator() {
 
   if (navigation.state === "idle") return;
 
-  return <Progress indeterminate className="rounded-none h-1 opacity-50 absolute top-0" />;
+  return (
+    <Progress
+      indeterminate
+      className="rounded-none h-1 opacity-50 fixed top-0 z-50"
+    />
+  );
 }

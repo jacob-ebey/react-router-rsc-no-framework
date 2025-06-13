@@ -7,10 +7,12 @@ import { env } from "std-env";
 import { loginPath } from "@/global-config";
 
 export type AuthSessionData = {
+  cartId?: string;
   userId?: string;
 };
 
 export type AuthContext = {
+  clearSession?: boolean;
   session: Session<AuthSessionData>;
 };
 
@@ -48,42 +50,56 @@ export const authMiddleware: unstable_MiddlewareFunction = async (
     request.headers.get("Cookie")
   );
 
-  const response = await AuthStorage.run({ session }, next);
+  const authCtx: AuthContext = { session };
+
+  const response = await AuthStorage.run(authCtx, next);
 
   if (response instanceof Response) {
-    response.headers.append(
-      "Set-Cookie",
-      await sessionStorage.commitSession(session)
-    );
+    if (authCtx.clearSession) {
+      response.headers.append(
+        "Set-Cookie",
+        await sessionStorage.destroySession(session)
+      );
+    } else {
+      response.headers.append(
+        "Set-Cookie",
+        await sessionStorage.commitSession(session)
+      );
+    }
   }
 
   return response;
 };
 
 export function getUserId() {
-  const store = AuthStorage.getStore();
-  if (!store) {
-    // TODO: This should be throwing an error, but since Layout is rendered
-    // in the manifest request right now, middleware isn't ran to wrap
-    // in AuthStore.run(...). I don't think that's optimal and we should
-    // figure out a way to resolve this.
-    return undefined;
-  }
-  return store.session.get("userId");
+  return getAuthSessionValue("userId");
 }
 
-export function setUserId(userId: string | undefined) {
+export function clearAuthSession() {
   const store = AuthStorage.getStore();
   if (!store) {
     throw new Error(
       "Auth context is not available. Ensure middleware is applied."
     );
   }
-  if (!userId) {
-    store.session.unset("userId");
-  } else {
-    store.session.set("userId", userId);
+  store.clearSession = true;
+}
+
+export function setUserId(userId: string) {
+  const store = AuthStorage.getStore();
+  if (!store) {
+    throw new Error(
+      "Auth context is not available. Ensure middleware is applied."
+    );
   }
+
+  for (const key of Object.keys(store.session.data)) {
+    if (key !== "userId") {
+      store.session.unset(key as keyof AuthSessionData);
+    }
+  }
+
+  setAuthSessionValue("userId", userId);
 }
 
 export function actionRequiresUserId() {
@@ -125,3 +141,34 @@ export const redirectIfAuthenticatedMiddleware =
     }
     return next();
   };
+
+export function getAuthSessionValue<Key extends keyof AuthSessionData>(
+  key: Key
+) {
+  const store = AuthStorage.getStore();
+  if (!store) {
+    // TODO: This should be throwing an error, but since Layout is rendered
+    // in the manifest request right now, middleware isn't ran to wrap
+    // in AuthStore.run(...). I don't think that's optimal and we should
+    // figure out a way to resolve this.
+    return undefined;
+  }
+  return store.session.get(key);
+}
+
+export function setAuthSessionValue<Key extends keyof AuthSessionData>(
+  key: Key,
+  value: AuthSessionData[Key] | undefined
+) {
+  const store = AuthStorage.getStore();
+  if (!store) {
+    throw new Error(
+      "Auth context is not available. Ensure middleware is applied."
+    );
+  }
+  if (typeof value === "undefined") {
+    store.session.unset(key);
+  } else {
+    store.session.set(key, value);
+  }
+}

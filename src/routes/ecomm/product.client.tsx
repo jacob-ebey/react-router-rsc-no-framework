@@ -3,10 +3,14 @@
 // @ts-expect-error
 import ClipboardCopy from "lucide-react/dist/esm/icons/clipboard-copy.js";
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
 import { useLocation } from "react-router";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
+
+import { addToCartAction } from "./cart/actions";
 
 export function ProductOptions({
   defaultSelectedOptions,
@@ -86,6 +90,33 @@ export function ProductValue({
       {selected && <input type="hidden" name={name} value={value} />}
     </div>
   );
+}
+
+export function AddToCartForm({ children }: { children?: React.ReactNode }) {
+  return (
+    <form
+      className="space-y-6"
+      action={async (formData) => {
+        const errors = await addToCartAction(formData);
+        if (errors) {
+          toast.error("Failed to add item to cart.", {
+            position: "top-right",
+          });
+        }
+      }}
+    >
+      {children}
+    </form>
+  );
+}
+
+export function AddToCartButton({
+  disabled,
+  ...props
+}: React.ComponentProps<typeof Button>) {
+  const status = useFormStatus();
+
+  return <Button disabled={status.pending || disabled} {...props} />;
 }
 
 export function CopyPermalinkButton({ disabled }: { disabled?: boolean }) {

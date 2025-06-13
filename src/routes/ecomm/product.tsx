@@ -6,8 +6,12 @@ import ShoppingCart from "lucide-react/dist/esm/icons/shopping-cart.js";
 
 import { gql } from "@/__generated__/gql";
 import { fetchGraphQL } from "@/lib/graphql";
-import { Button } from "@/components/ui/button";
-import { CopyPermalinkButton, ProductOptions } from "./product.client";
+import {
+  AddToCartButton,
+  AddToCartForm,
+  CopyPermalinkButton,
+  ProductOptions,
+} from "./product.client";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
   assert(params.handle, "Product handle is required");
@@ -42,21 +46,24 @@ export default async function EcommProduct({
   loaderData: Awaited<ReturnType<typeof loader>>;
   params: { handle: string };
 }) {
-  const { product } = await getProduct(
-    params.handle,
-    Object.entries(selectedOptions).map(([name, value]) => ({ name, value }))
-  );
+  const [{ product }, { product: selectedProduct }] = await Promise.all([
+    getProduct(params.handle),
+    getSelectedProduct(
+      params.handle,
+      Object.entries(selectedOptions).map(([name, value]) => ({ name, value }))
+    ),
+  ]);
   assert(product, "Product not found");
 
   const featuredImage =
-    product.variantBySelectedOptions?.image ??
+    selectedProduct?.variantBySelectedOptions?.image ??
     product.featuredImage ??
     product.images.nodes[0];
 
   const minPrice =
-    product.variantBySelectedOptions?.price ??
+    selectedProduct?.variantBySelectedOptions?.price ??
     product.priceRange.minVariantPrice;
-  const maxPrice = product.variantBySelectedOptions
+  const maxPrice = selectedProduct?.variantBySelectedOptions
     ? null
     : product.priceRange.minVariantPrice.amount !==
         product.priceRange.maxVariantPrice.amount
@@ -74,32 +81,19 @@ export default async function EcommProduct({
               alt={featuredImage.altText || ""}
               width={600}
               height={600}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover block"
+              style={{
+                viewTransitionName: featuredImage.id
+                  ? `product_image_${btoa(featuredImage.id).replace(/=+$/g, "")}`
+                  : undefined,
+              }}
             />
           </div>
-          {/* <div className="grid grid-cols-4 gap-2">
-              {images.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  className={`aspect-square overflow-hidden rounded-md border-2 ${
-                    selectedImage === index ? "border-primary" : "border-muted"
-                  }`}
-                >
-                  <Image
-                    src={image || "/placeholder.svg"}
-                    alt={`Product thumbnail ${index + 1}`}
-                    width={150}
-                    height={150}
-                    className="h-full w-full object-cover"
-                  />
-                </button>
-              ))}
-            </div> */}
         </div>
 
         {/* Product Info */}
-        <form className="space-y-6">
+        <AddToCartForm>
+          <input type="hidden" name="_productId" value={product.id} />
           <div>
             <h1 className="text-3xl font-bold">{product.title}</h1>
             <div className="text-2xl font-bold mt-2">
@@ -123,32 +117,46 @@ export default async function EcommProduct({
           </div>
 
           <ProductOptions
-            key={product.variantBySelectedOptions?.id}
+            key={selectedProduct?.variantBySelectedOptions?.id}
             defaultSelectedOptions={selectedOptions}
             options={product.options}
           />
 
           <div className="flex flex-wrap gap-2">
-            <Button
+            <AddToCartButton
               type="submit"
               className="w-full sm:w-auto"
               size="lg"
-              disabled={!product.variantBySelectedOptions}
+              disabled={!selectedProduct?.variantBySelectedOptions}
             >
               <ShoppingCart className="mr-2" />
               Add to Cart
-            </Button>
-            <CopyPermalinkButton disabled={!product.variantBySelectedOptions} />
+            </AddToCartButton>
+            <CopyPermalinkButton />
           </div>
 
           <div className="flex space-x-2"></div>
-
-          <div className="grid grid-cols-3 gap-4 pt-4"></div>
-        </form>
+        </AddToCartForm>
       </div>
-
-      {/* Product Details Tabs */}
-      <div className="mt-12"></div>
+      <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {product.images.nodes.map((image) =>
+          image.id === featuredImage?.id ? null : (
+            <img
+              key={image.id}
+              src={image.url}
+              alt={image.altText || ""}
+              width={image.width ?? undefined}
+              height={image.height ?? undefined}
+              className="block"
+              style={{
+                viewTransitionName: image.id
+                  ? `product_image_${btoa(image.id).replace(/=+$/g, "")}`
+                  : undefined,
+              }}
+            />
+          )
+        )}
+      </div>
     </div>
   );
 }
@@ -194,7 +202,7 @@ async function getProductMeta(handle: string) {
 }
 
 const PRODUCT_QUERY = gql(`
-  query Product($handle: String!, $selectedOptions: [SelectedOptionInput!]!) {
+  query Product($handle: String!) {
     product(handle: $handle) {
       id
       title
@@ -210,18 +218,8 @@ const PRODUCT_QUERY = gql(`
           id
           altText
           url
-        }
-      }
-      variantBySelectedOptions(caseInsensitiveMatch: true, ignoreUnknownOptions: true, selectedOptions: $selectedOptions) {
-        id
-        price {
-          amount
-          currencyCode
-        }
-        image {
-          id
-          altText
-          url
+          width
+          height
         }
       }
       options {
@@ -246,7 +244,57 @@ const PRODUCT_QUERY = gql(`
   }
 `);
 
-async function getProduct(
+async function getProduct(handle: string) {
+  "use cache";
+
+  const url = env.SHOPIFY_API;
+  if (!url) {
+    throw new Error("SHOPIFY_API environment variable is not set");
+  }
+
+  const token = env.SHOPIFY_API_TOKEN;
+
+  return await fetchGraphQL(
+    url,
+    PRODUCT_QUERY,
+    { handle },
+    {
+      headers: token
+        ? {
+            "Shopify-Storefront-Private-Token": token,
+          }
+        : undefined,
+    }
+  );
+}
+
+const SELECTED_PRODUCT_QUERY = gql(`
+  query SelectedProduct(
+    $handle: String!
+    $selectedOptions: [SelectedOptionInput!]!
+  ) {
+    product(handle: $handle) {
+      variantBySelectedOptions(
+        caseInsensitiveMatch: true
+        ignoreUnknownOptions: true
+        selectedOptions: $selectedOptions
+      ) {
+        id
+        price {
+          amount
+          currencyCode
+        }
+        image {
+          id
+          altText
+          url
+        }
+      }
+    }
+  }
+`);
+
+async function getSelectedProduct(
   handle: string,
   selectedOptions: { name: string; value: string }[]
 ) {
@@ -261,7 +309,7 @@ async function getProduct(
 
   return await fetchGraphQL(
     url,
-    PRODUCT_QUERY,
+    SELECTED_PRODUCT_QUERY,
     { handle, selectedOptions },
     {
       headers: token
